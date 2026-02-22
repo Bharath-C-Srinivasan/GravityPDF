@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { FileDropzone } from '../components/FileDropzone';
 import { usePDFWorker } from '../hooks/usePDFWorker';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion } from 'framer-motion';
 import { Droplets, Trash2 } from 'lucide-react';
 
@@ -41,14 +42,7 @@ export default function AddWatermarkTool() {
             const resultBlob = await processJob('add-watermark', files, { text: watermarkText, opacity });
 
             if (resultBlob) {
-                const url = URL.createObjectURL(resultBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `watermarked_${files[0].name}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                await downloadFile(resultBlob as Blob, `watermarked_${files[0].name}`);
                 toast.success('Watermark added successfully!');
             }
         } catch (e: any) {

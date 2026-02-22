@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { FileDropzone } from '../components/FileDropzone';
 import { usePDFWorker } from '../hooks/usePDFWorker';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ImagePlus, Trash2 } from 'lucide-react';
 
@@ -37,14 +38,7 @@ export default function PNGToPDFTool() {
             const resultBlob = await processJob('image-to-pdf', files);
 
             if (resultBlob) {
-                const url = URL.createObjectURL(resultBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `converted_images.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                await downloadFile(resultBlob as Blob, `converted_images.pdf`);
                 toast.success('PNGs successfully converted to PDF!');
             }
         } catch (e) {

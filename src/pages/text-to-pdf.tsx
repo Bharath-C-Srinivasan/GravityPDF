@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { FileDropzone } from '../components/FileDropzone';
 import { usePDFWorker } from '../hooks/usePDFWorker';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Trash2 } from 'lucide-react';
 
@@ -38,14 +39,7 @@ export default function TextToPDFTool() {
             const resultBlob = await processJob('text-to-pdf', files);
 
             if (resultBlob) {
-                const url = URL.createObjectURL(resultBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `converted_text.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                await downloadFile(resultBlob as Blob, `converted_text.pdf`);
                 toast.success('Text files successfully converted to PDF!');
             }
         } catch (e) {

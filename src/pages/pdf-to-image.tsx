@@ -3,6 +3,7 @@ import { FileDropzone } from '../components/FileDropzone';
 import { PagePreview } from '../components/PagePreview';
 import { pdfjsLib } from '../lib/pdfjs-setup';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Image as ImageIcon, FileArchive } from 'lucide-react';
 import JSZip from 'jszip';
@@ -78,14 +79,7 @@ export default function PDFToImageTool() {
 
             const content = await zip.generateAsync({ type: 'blob' });
 
-            const url = URL.createObjectURL(content);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${file.name.replace('.pdf', '')}_images.zip`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            await downloadFile(content as Blob, `${file.name.replace('.pdf', '')}_images.zip`);
 
             toast.success("All pages converted and downloaded!");
         } catch (err) {

@@ -5,6 +5,7 @@ import { PagePreview } from '../components/PagePreview';
 import { usePDFWorker } from '../hooks/usePDFWorker';
 import { pdfjsLib } from '../lib/pdfjs-setup';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpDown, GripVertical } from 'lucide-react';
 
@@ -55,14 +56,7 @@ export default function ReorderPagesTool() {
             const resultBlob = await processJob('reorder-pages', [file], { newOrder: pageOrder });
 
             if (resultBlob) {
-                const url = URL.createObjectURL(resultBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `reordered_${file.name}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                await downloadFile(resultBlob as Blob, `reordered_${file.name}`);
                 toast.success('Pages reordered successfully!');
             }
         } catch (e: any) {

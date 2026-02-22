@@ -3,6 +3,7 @@ import { FileDropzone } from '../components/FileDropzone';
 import { PagePreview } from '../components/PagePreview';
 import { usePDFWorker } from '../hooks/usePDFWorker';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap } from 'lucide-react';
 
@@ -34,14 +35,7 @@ export default function CompressTool() {
             if (compressedBlob) {
                 setCompressedSize(compressedBlob.size);
 
-                const url = URL.createObjectURL(compressedBlob as Blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `compressed_${file.name}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                await downloadFile(compressedBlob as Blob, `compressed_${file.name}`);
 
                 toast.success("PDF compressed successfully!");
             }

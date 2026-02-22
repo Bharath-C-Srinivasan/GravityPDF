@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { FileDropzone } from '../components/FileDropzone';
 import { usePDFWorker } from '../hooks/usePDFWorker';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion } from 'framer-motion';
 import { FilePlus, Trash2 } from 'lucide-react';
 
@@ -39,14 +40,7 @@ export default function AddBlankPagesTool() {
             const resultBlob = await processJob('add-blank-pages', files, { insertions });
 
             if (resultBlob) {
-                const url = URL.createObjectURL(resultBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `with_blanks_${files[0].name}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                await downloadFile(resultBlob as Blob, `with_blanks_${files[0].name}`);
                 toast.success('Blank pages added successfully!');
             }
         } catch (e: any) {

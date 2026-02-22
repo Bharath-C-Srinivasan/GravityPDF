@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Layers, MoreVertical, X, ChevronDown, Sun, Moon, Search, Smartphone } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Capacitor } from '@capacitor/core';
 import { Layout } from './components/Layout';
 import Dashboard from './pages/index';
 import MergeTool from './pages/merge';
@@ -141,14 +142,16 @@ function App() {
               </div>
 
               {/* Download App for Android Button */}
-              <a
-                href="/downloads/GravityPDF.apk"
-                download="GravityPDF.apk"
-                className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-neon-cyan to-neon-magenta text-white font-bold px-4 py-1.5 rounded-full text-sm hover:opacity-90 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] mr-4 whitespace-nowrap"
-              >
-                <Smartphone className="w-4 h-4" />
-                Download App for Android
-              </a>
+              {!Capacitor.isNativePlatform() && (
+                <a
+                  href="/downloads/GravityPDF.apk"
+                  download="GravityPDF.apk"
+                  className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-neon-cyan to-neon-magenta text-white font-bold px-4 py-1.5 rounded-full text-sm hover:opacity-90 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] mr-4 whitespace-nowrap"
+                >
+                  <Smartphone className="w-4 h-4" />
+                  Download App for Android
+                </a>
+              )}
 
               {/* Desktop Nav */}
               <nav className="hidden lg:flex items-center space-x-8 z-50">
@@ -252,15 +255,17 @@ function App() {
                   </div>
 
                   {/* Mobile Download App Button */}
-                  <a
-                    href="/downloads/GravityPDF.apk"
-                    download="GravityPDF.apk"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-neon-cyan to-neon-magenta text-white font-bold px-4 py-3 rounded-xl text-sm hover:opacity-90 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] mb-4"
-                  >
-                    <Smartphone className="w-5 h-5" />
-                    Download Android App
-                  </a>
+                  {!Capacitor.isNativePlatform() && (
+                    <a
+                      href="/downloads/GravityPDF.apk"
+                      download="GravityPDF.apk"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-neon-cyan to-neon-magenta text-white font-bold px-4 py-3 rounded-xl text-sm hover:opacity-90 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] mb-4"
+                    >
+                      <Smartphone className="w-5 h-5" />
+                      Download Android App
+                    </a>
+                  )}
 
                   <Link to="/" className="block text-lg font-bold text-gray-900 dark:text-white hover:text-neon-cyan transition-colors px-2 py-1 border-b border-gray-200 dark:border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
                     Dashboard

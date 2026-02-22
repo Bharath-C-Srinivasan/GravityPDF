@@ -3,6 +3,7 @@ import { FileDropzone } from '../components/FileDropzone';
 import { PagePreview } from '../components/PagePreview';
 import { usePDFWorker } from '../hooks/usePDFWorker';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion } from 'framer-motion';
 import { pdfjsLib } from '../lib/pdfjs-setup';
 
@@ -63,14 +64,7 @@ export default function SplitTool() {
             if (results && Array.isArray(results) && results.length > 0) {
                 // results[0] contains the extracted PDF blob
                 const extractedBlob = results[0];
-                const url = URL.createObjectURL(extractedBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `extracted_${file.name}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                await downloadFile(extractedBlob as Blob, `extracted_${file.name}`);
 
                 toast.success("Pages extracted successfully!");
             }

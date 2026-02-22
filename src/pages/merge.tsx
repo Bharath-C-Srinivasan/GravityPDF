@@ -4,6 +4,7 @@ import { FileDropzone } from '../components/FileDropzone';
 import { PagePreview } from '../components/PagePreview';
 import { usePDFWorker } from '../hooks/usePDFWorker';
 import toast from 'react-hot-toast';
+import { downloadFile } from '../lib/utils';
 import { motion } from 'framer-motion';
 
 export default function MergeTool() {
@@ -38,14 +39,7 @@ export default function MergeTool() {
             const mergedBlob = await processJob('merge', files);
             if (mergedBlob) {
                 // Create download link
-                const url = URL.createObjectURL(mergedBlob as Blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'merged_gravitypdf.pdf';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                await downloadFile(mergedBlob as Blob, 'merged_gravitypdf.pdf');
 
                 toast.success("PDF merged successfully!");
             }
