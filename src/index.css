@@ -51,16 +51,25 @@
 }
 
 /* 
-  Global Light Mode Overrides
-  Ensures the existing dark-mode Tailwind classes translate to clean light-mode
-  colors without requiring thousands of inline class refactors across the 15 tools.
+  Global Premium Light Mode Overrides
+  A softer, frosty glassmorphism aesthetic inspired by modern OS interfaces.
 */
 html.light body {
-  @apply bg-slate-50 text-slate-900;
+  background-color: #f4f7fa !important;
+  background-image:
+    radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 0.03) 0, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.03) 0, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 0.03) 0, transparent 50%);
+  color: #1e293b !important;
 }
 
 html.light .bg-background {
-  background-color: #f8fafc !important;
+  background-color: transparent !important;
+}
+
+html.light .bg-background\/80 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
 html.light .text-white {
@@ -69,35 +78,78 @@ html.light .text-white {
 
 html.light .text-gray-400,
 html.light .text-gray-300 {
-  color: #475569 !important;
-}
-
-html.light .text-gray-500 {
   color: #64748b !important;
 }
 
+html.light .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+/* Glass Panels with softer inner shadows and blurs */
+html.light .glass-panel {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(20px);
+}
+
+html.light .glass-panel-hover:hover {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(34, 211, 238, 0.5) !important;
+  box-shadow: 0 15px 50px rgba(34, 211, 238, 0.1), inset 0 0 0 1px rgba(34, 211, 238, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* Adjust dark background utility classes used locally to shiny white ones */
+html.light .bg-black\/95,
+html.light .bg-black\/60,
+html.light .bg-black\/50,
+html.light .bg-black\/40 {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light .bg-black\/20 {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Form inputs & smaller elements */
 html.light .bg-white\/5,
-html.light .bg-white\/10,
+html.light .bg-white\/10 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02) !important;
+}
+
 html.light .bg-white\/20 {
-  background-color: rgba(0, 0, 0, 0.04) !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
 }
 
 html.light .border-white\/10,
 html.light .border-white\/5 {
-  border-color: rgba(0, 0, 0, 0.1) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
 }
 
-html.light .bg-black\/95,
-html.light .bg-black\/60,
-html.light .bg-black\/50,
-html.light .bg-black\/40,
-html.light .bg-black\/20 {
-  background-color: rgba(255, 255, 255, 0.9) !important;
+/* Text glow adjustments - disable text glows on light mode as they muddy the text */
+html.light .text-glow-cyan {
+  text-shadow: none !important;
 }
 
-html.light .glass-panel {
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05) !important;
+/* Make sure the gradient title pops but without heavy dark drop shadows */
+html.light .text-gradient-primary {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-cyan-500;
+  filter: drop-shadow(0 2px 4px rgba(217, 70, 239, 0.1)) !important;
+}
+
+/* Inputs and dropzones */
+html.light input[type="text"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light input[type="text"]::placeholder {
+  color: #94a3b8 !important;
 }

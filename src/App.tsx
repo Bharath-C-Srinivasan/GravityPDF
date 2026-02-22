@@ -143,26 +143,40 @@ function App() {
                   </div>
                 </div>
 
-                {/* Desktop Theme Toggle */}
+                {/* Desktop Theme Toggle Switch */}
                 <button
                   onClick={() => setIsDark(!isDark)}
-                  className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan/50 hover:shadow-[0_0_10px_rgba(0,243,255,0.2)] transition-all focus:outline-none"
+                  className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:ring-offset-2 focus:ring-offset-background ${isDark ? 'bg-white/10 border border-white/20 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]' : 'bg-gray-200 border border-gray-300 shadow-inner'}`}
                   aria-label="Toggle theme"
                   title="Toggle Light/Dark Mode"
                 >
-                  {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                  <span className="sr-only">Toggle theme</span>
+                  <span className="absolute inset-x-0 flex justify-between px-2 w-full pointer-events-none text-xs z-0">
+                    <Moon className={`w-3.5 h-3.5 transition-opacity ${isDark ? 'text-white' : 'text-gray-400 opacity-50'}`} />
+                    <Sun className={`w-3.5 h-3.5 transition-opacity ${isDark ? 'text-gray-500 opacity-50' : 'text-orange-500'}`} />
+                  </span>
+                  <span
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-300 ease-in-out z-10 ${isDark ? 'translate-x-1 shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'translate-x-8 shadow-md'}`}
+                  />
                 </button>
               </nav>
 
               {/* Mobile Actions Container */}
-              <div className="lg:hidden flex items-center gap-2">
-                {/* Mobile Theme Toggle */}
+              <div className="lg:hidden flex items-center gap-4">
+                {/* Mobile Theme Toggle Switch */}
                 <button
                   onClick={() => setIsDark(!isDark)}
-                  className="p-2 rounded-lg text-gray-400 hover:text-neon-cyan hover:bg-white/5 transition-colors focus:outline-none"
+                  className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none ${isDark ? 'bg-white/10 border border-white/20' : 'bg-gray-200 border border-gray-300 shadow-inner'}`}
                   aria-label="Toggle theme"
                 >
-                  {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                  <span className="sr-only">Toggle theme</span>
+                  <span className="absolute inset-x-0 flex justify-between px-2 w-full pointer-events-none text-xs z-0">
+                    <Moon className={`w-3.5 h-3.5 transition-opacity ${isDark ? 'text-white' : 'text-gray-400 opacity-50'}`} />
+                    <Sun className={`w-3.5 h-3.5 transition-opacity ${isDark ? 'text-gray-500 opacity-50' : 'text-orange-500'}`} />
+                  </span>
+                  <span
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-300 ease-in-out z-10 ${isDark ? 'translate-x-1 shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'translate-x-8 shadow-md'}`}
+                  />
                 </button>
 
                 {/* Mobile Menu Toggle */}
