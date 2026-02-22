@@ -222,7 +222,7 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    className="max-w-3xl mx-auto mb-16 md:mb-24 p-1 rounded-2xl bg-gradient-to-r from-neon-cyan/20 via-neon-magenta/20 to-neon-cyan/20 p-[1px]"
+                    className="max-w-4xl mx-auto mb-16 md:mb-24 p-1 rounded-2xl bg-gradient-to-r from-neon-cyan/20 via-neon-magenta/20 to-neon-cyan/20 p-[1px]"
                 >
                     <div className="bg-white/90 dark:bg-background/90 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-gray-200 dark:border-white/5 shadow-2xl relative overflow-hidden">
                         {/* Decorative background glow */}
