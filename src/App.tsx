@@ -229,10 +229,40 @@ function App() {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="lg:hidden border-t border-white/5 bg-background overflow-hidden"
+                className="lg:hidden border-t border-gray-200 dark:border-white/5 bg-white dark:bg-background overflow-hidden"
               >
                 <div className="px-4 py-6 max-h-[75vh] overflow-y-auto space-y-4">
-                  <Link to="/" className="block text-lg font-bold text-white hover:text-neon-cyan transition-colors px-2 py-1 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
+                  {/* Mobile Search Bar */}
+                  <div className="relative group mb-4">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Search className="h-4 w-4 text-gray-400 dark:text-gray-500 group-focus-within:text-neon-cyan transition-colors" />
+                    </div>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        if (window.location.pathname !== '/') {
+                          window.location.assign('/');
+                        }
+                      }}
+                      placeholder="Search tools..."
+                      className="w-full bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/50 transition-all text-sm placeholder:text-gray-500"
+                    />
+                  </div>
+
+                  {/* Mobile Download App Button */}
+                  <a
+                    href="/downloads/GravityPDF.apk"
+                    download="GravityPDF.apk"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-neon-cyan to-neon-magenta text-white font-bold px-4 py-3 rounded-xl text-sm hover:opacity-90 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] mb-4"
+                  >
+                    <Smartphone className="w-5 h-5" />
+                    Download Android App
+                  </a>
+
+                  <Link to="/" className="block text-lg font-bold text-gray-900 dark:text-white hover:text-neon-cyan transition-colors px-2 py-1 border-b border-gray-200 dark:border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
                     Dashboard
                   </Link>
                   <div className="space-y-1 pt-2">
@@ -241,7 +271,7 @@ function App() {
                       <Link
                         key={link.path}
                         to={link.path}
-                        className="block text-sm font-medium text-gray-300 hover:text-neon-cyan transition-colors px-3 py-2 rounded-lg hover:bg-white/5"
+                        className="block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-neon-cyan transition-colors px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {link.name}
