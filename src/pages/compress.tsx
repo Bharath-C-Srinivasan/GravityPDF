@@ -148,9 +148,9 @@ export default function CompressTool() {
 
                                     {/* Error Message */}
                                     {status === 'error' && (
-                                        <div className="p-4 bg-red-900/40 border border-red-500 rounded text-red-200 text-sm">
-                                            {error || "An error occurred during processing."}
-                                            <button onClick={reset} className="ml-4 underline hover:text-white">Dismiss</button>
+                                        <div className="p-4 bg-red-900/40 border border-red-500 rounded text-red-200 text-sm flex justify-between items-center">
+                                            <span>{error || "An error occurred during processing."}</span>
+                                            <button onClick={reset} className="underline hover:text-white ml-4">Dismiss</button>
                                         </div>
                                     )}
 

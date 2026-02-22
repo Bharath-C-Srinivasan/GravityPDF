@@ -167,8 +167,9 @@ export default function AddWatermarkTool() {
                     )}
 
                     {status === 'error' && (
-                        <div className="mt-6 p-4 bg-red-900/40 border border-red-500 rounded text-red-200">
-                            {error || "An error occurred during process."}
+                        <div className="mt-6 p-4 bg-red-900/40 border border-red-500 rounded text-red-200 flex justify-between items-center">
+                            <span>{error || "An error occurred during process."}</span>
+                            <button onClick={reset} className="underline hover:text-white ml-4">Dismiss</button>
                         </div>
                     )}
 
