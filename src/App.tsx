@@ -142,7 +142,8 @@ function App() {
 
               {/* Download App for Android Button */}
               <a
-                href="/#android-app"
+                href="/downloads/GravityPDF.apk"
+                download="GravityPDF.apk"
                 className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-neon-cyan to-neon-magenta text-white font-bold px-4 py-1.5 rounded-full text-sm hover:opacity-90 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] mr-4 whitespace-nowrap"
               >
                 <Smartphone className="w-4 h-4" />
