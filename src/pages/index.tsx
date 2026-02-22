@@ -1,10 +1,9 @@
 import {
     Layers, SplitSquareHorizontal, RotateCcw, Image as ImageIcon, Zap,
-    FileImage, FileText, ImagePlus, Droplets, Hash,
-    FileMinus, ArrowUpDown, FilePlus, Tags, Minimize, Search
+    FileImage, FileText, ImagePlus, Droplets, Hash, Download, ShieldCheck,
+    FileMinus, ArrowUpDown, FilePlus, Tags, Minimize
 } from 'lucide-react';
 import { DeveloperSection } from '../components/DeveloperSection';
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const pdfTools = [
@@ -162,8 +161,7 @@ const Section = ({ title, tools }: { title: string, tools: any[] }) => {
     );
 };
 
-export default function Dashboard() {
-    const [searchQuery, setSearchQuery] = useState('');
+export default function Dashboard({ searchQuery = '', setSearchQuery }: { searchQuery?: string, setSearchQuery?: (q: string) => void }) {
 
     const filterTools = (tools: any[]) => {
         if (!searchQuery.trim()) return tools;
@@ -186,29 +184,10 @@ export default function Dashboard() {
                 <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 md:mb-6 pb-2 text-gradient-primary leading-[1.1]">
                     Welcome to GravityPDF
                 </h1>
-                <p className="max-w-2xl text-base md:text-xl text-gray-400 mx-auto leading-relaxed px-2 mb-8 md:mb-12">
+                <p className="max-w-2xl text-base md:text-xl text-gray-400 mx-auto leading-relaxed px-2 mb-8">
                     Your ultimate companion for seamless PDF management. Fast, secure, and entirely browser-based. Zero uploads, zero servers, total control.
                 </p>
-
-                {/* Animated Search Bar */}
-                <div className="max-w-xl mx-auto relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <Search className="h-5 w-5 text-gray-400 group-focus-within:text-neon-cyan transition-colors" />
-                    </div>
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search for tools (e.g. Merge, Split, Watermark)..."
-                        className="w-full bg-white/5 border border-white/10 text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/50 transition-all shadow-[0_0_15px_rgba(0,0,0,0.2)] group-focus-within:shadow-[0_0_30px_rgba(34,211,238,0.15)] placeholder:text-gray-500"
-                    />
-                    {searchQuery && (
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-neon-cyan">
-                            {totalResults} found
-                        </div>
-                    )}
-                </div>
-            </div>
+            </div> {/* This closes the div with className="text-center mb-8 md:mb-12 px-2" */}
 
             <div className="mb-16 md:mb-24 px-2 min-h-[50vh]">
                 <AnimatePresence mode="popLayout">
@@ -221,7 +200,7 @@ export default function Dashboard() {
                         >
                             <p className="text-gray-400 text-lg">No tools found matching "{searchQuery}".</p>
                             <button
-                                onClick={() => setSearchQuery('')}
+                                onClick={() => setSearchQuery?.('')}
                                 className="mt-4 text-neon-cyan hover:underline"
                             >
                                 Clear search
@@ -235,6 +214,64 @@ export default function Dashboard() {
                         </>
                     )}
                 </AnimatePresence>
+            </div>
+
+            {/* Android App Download Section (Moved Below Security & Utilities) */}
+            <div className="px-2">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    className="max-w-3xl mx-auto mb-16 md:mb-24 p-1 rounded-2xl bg-gradient-to-r from-neon-cyan/20 via-neon-magenta/20 to-neon-cyan/20 p-[1px]"
+                >
+                    <div className="bg-white/90 dark:bg-background/90 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-gray-200 dark:border-white/5 shadow-2xl relative overflow-hidden">
+                        {/* Decorative background glow */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-neon-cyan/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3"></div>
+
+                        <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8 relative z-10">
+                            <div className="flex-shrink-0 bg-gray-50 dark:bg-gradient-to-br dark:from-gray-800 dark:to-black p-4 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-[0_0_30px_rgba(34,211,238,0.15)] flex items-center justify-center">
+                                <img src="/vite.svg" alt="GravityPDF App Logo" className="w-16 h-16 object-contain drop-shadow-lg" />
+                            </div>
+
+                            <div className="flex-1 text-center md:text-left">
+                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2">
+                                    Get the GravityPDF Android App
+                                    <span className="bg-neon-cyan/10 text-neon-cyan text-xs px-2 py-1 rounded-full border border-neon-cyan/20">Free</span>
+                                </h3>
+                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                                    Process PDFs offline directly on your phone. Fast, secure, and zero data usage.
+                                </p>
+
+                                <div className="flex flex-col sm:flex-row items-center gap-3 justify-center md:justify-start">
+                                    <a
+                                        href="/downloads/GravityPDF.apk"
+                                        download="GravityPDF.apk"
+                                        style={{ color: '#ffffff', textDecoration: 'none' }}
+                                        className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-neon-cyan to-neon-magenta px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+                                    >
+                                        <Download className="w-5 h-5" style={{ color: '#ffffff' }} />
+                                        <span style={{ color: '#ffffff' }}>Download APK</span>
+                                    </a>
+
+                                    <div className="text-xs text-gray-500 flex items-center gap-1 mt-2 sm:mt-0">
+                                        <ShieldCheck className="w-4 h-4 text-neon-green" />
+                                        <span>100% Safe & Private</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Installation Instructions */}
+                        <div className="mt-6 pt-5 border-t border-gray-200 dark:border-white/10 text-left">
+                            <p className="text-xs text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                                <span className="text-neon-cyan shrink-0">💡 Install Note:</span>
+                                <span>
+                                    Since you are downloading outside the Play Store, your phone may say "File might be harmful". This is standard for direct APK downloads. Tap <strong>Download anyway</strong>, open the file, and tap <strong>Install</strong>.
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </motion.div>
             </div>
 
             <div className="px-2">

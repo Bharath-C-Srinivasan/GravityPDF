@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Layers, MoreVertical, X, ChevronDown, Sun, Moon } from 'lucide-react';
+import { Layers, MoreVertical, X, ChevronDown, Sun, Moon, Search } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Layout } from './components/Layout';
 import Dashboard from './pages/index';
@@ -35,12 +35,12 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const AnimatedRoutes = () => {
+const AnimatedRoutes = ({ searchQuery, setSearchQuery }: { searchQuery: string, setSearchQuery: (q: string) => void }) => {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
+        <Route path="/" element={<PageTransition><Dashboard searchQuery={searchQuery} setSearchQuery={setSearchQuery} /></PageTransition>} />
         <Route path="/merge" element={<PageTransition><MergeTool /></PageTransition>} />
         <Route path="/split" element={<PageTransition><SplitTool /></PageTransition>} />
         <Route path="/image-to-pdf" element={<PageTransition><ImageToPDFTool /></PageTransition>} />
@@ -63,6 +63,7 @@ const AnimatedRoutes = () => {
 };
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
     // Check local storage or default to dark mode
@@ -118,6 +119,25 @@ function App() {
                   <Layers className="h-6 w-6 md:h-7 md:w-7 text-neon-cyan" />
                   <span>Gravity<span className="text-neon-cyan">PDF</span></span>
                 </Link>
+              </div>
+
+              {/* Desktop Search Bar */}
+              <div className="hidden md:flex flex-1 max-w-md mx-6 relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 text-gray-400 group-focus-within:text-neon-cyan transition-colors" />
+                </div>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    if (window.location.pathname !== '/') {
+                      window.location.assign('/');
+                    }
+                  }}
+                  placeholder="Search for tools..."
+                  className="w-full bg-white/10 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-full py-1.5 pl-10 pr-4 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/50 transition-all text-sm placeholder:text-gray-500 shadow-inner dark:shadow-none"
+                />
               </div>
 
               {/* Desktop Nav */}
@@ -226,7 +246,7 @@ function App() {
 
         {/* Main Content Area */}
         <div className="pt-16 min-h-[calc(100vh-64px)] overflow-x-hidden w-full max-w-[100vw]">
-          <AnimatedRoutes />
+          <AnimatedRoutes searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
       </Layout>
     </Router>
