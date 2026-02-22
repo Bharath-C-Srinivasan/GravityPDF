@@ -1,5 +1,5 @@
 import {
-    Layers, SplitSquareHorizontal, RotateCcw, Image as ImageIcon, Zap,
+    Combine, SplitSquareHorizontal, RotateCcw, Image as ImageIcon, Zap,
     FileImage, FileText, ImagePlus, Droplets, Hash, Download, ShieldCheck,
     FileMinus, ArrowUpDown, FilePlus, Tags, Minimize
 } from 'lucide-react';
@@ -9,7 +9,7 @@ import { Capacitor } from '@capacitor/core';
 
 const pdfTools = [
     {
-        icon: <Layers className="h-8 w-8 text-neon-cyan" />,
+        icon: <Combine className="h-8 w-8 text-neon-cyan" />,
         title: 'Merge PDF',
         description: 'Combine multiple PDFs into one unified document.',
         href: '/merge',
