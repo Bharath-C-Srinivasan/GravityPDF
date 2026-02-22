@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Layers, MoreVertical, X, ChevronDown, Sun, Moon, Search } from 'lucide-react';
+import { Layers, MoreVertical, X, ChevronDown, Sun, Moon, Search, Smartphone } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Layout } from './components/Layout';
 import Dashboard from './pages/index';
@@ -139,6 +139,15 @@ function App() {
                   className="w-full bg-white/10 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-full py-1.5 pl-10 pr-4 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/50 transition-all text-sm placeholder:text-gray-500 shadow-inner dark:shadow-none"
                 />
               </div>
+
+              {/* Download App for Android Button */}
+              <a
+                href="/#android-app"
+                className="hidden lg:flex items-center gap-2 bg-gradient-to-r from-neon-cyan to-neon-magenta text-white font-bold px-4 py-1.5 rounded-full text-sm hover:opacity-90 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] mr-4 whitespace-nowrap"
+              >
+                <Smartphone className="w-4 h-4" />
+                Download App for Android
+              </a>
 
               {/* Desktop Nav */}
               <nav className="hidden lg:flex items-center space-x-8 z-50">

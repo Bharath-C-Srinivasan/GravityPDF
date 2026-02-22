@@ -217,7 +217,7 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
             </div>
 
             {/* Android App Download Section (Moved Below Security & Utilities) */}
-            <div className="px-2">
+            <div className="px-2" id="android-app">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
