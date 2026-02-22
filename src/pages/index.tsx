@@ -224,21 +224,21 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
                     viewport={{ once: true, margin: "-100px" }}
                     className="max-w-4xl mx-auto mb-16 md:mb-24 p-1 rounded-2xl bg-gradient-to-r from-neon-cyan/20 via-neon-magenta/20 to-neon-cyan/20 p-[1px]"
                 >
-                    <div className="bg-white/90 dark:bg-background/90 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-gray-200 dark:border-white/5 shadow-2xl relative overflow-hidden">
+                    <div className="bg-white/90 dark:bg-background/90 backdrop-blur-xl rounded-2xl p-5 sm:p-6 md:p-8 border border-gray-200 dark:border-white/5 shadow-2xl relative overflow-hidden">
                         {/* Decorative background glow */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-neon-cyan/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3"></div>
 
-                        <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8 relative z-10">
-                            <div className="flex-shrink-0 bg-gray-50 dark:bg-gradient-to-br dark:from-gray-800 dark:to-black p-4 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-[0_0_30px_rgba(34,211,238,0.15)] flex items-center justify-center">
-                                <img src="/vite.svg" alt="GravityPDF App Logo" className="w-16 h-16 object-contain drop-shadow-lg" />
+                        <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8 relative z-10">
+                            <div className="flex-shrink-0 bg-gray-50 dark:bg-gradient-to-br dark:from-gray-800 dark:to-black p-3 md:p-4 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-[0_0_30px_rgba(34,211,238,0.15)] flex items-center justify-center">
+                                <img src="/vite.svg" alt="GravityPDF App Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain drop-shadow-lg" />
                             </div>
 
                             <div className="flex-1 text-center md:text-left">
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2">
+                                <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2 leading-tight">
                                     Get the GravityPDF Android App
-                                    <span className="bg-neon-cyan/10 text-neon-cyan text-xs px-2 py-1 rounded-full border border-neon-cyan/20">Free</span>
+                                    <span className="bg-neon-cyan/10 text-neon-cyan text-[10px] md:text-xs px-2 py-1 rounded-full border border-neon-cyan/20">Free</span>
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                                <p className="text-gray-600 dark:text-gray-400 text-xs md:text-sm mb-4 md:mb-5">
                                     Process PDFs offline directly on your phone. Fast, secure, and zero data usage.
                                 </p>
 
