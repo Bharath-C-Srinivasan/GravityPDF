@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 
-type JobType = 'merge' | 'split' | 'compress' | 'convert' | 'image-to-pdf' | 'rotate';
+type JobType = 'merge' | 'split' | 'compress' | 'convert' | 'image-to-pdf' | 'rotate' | 'text-to-pdf';
 type JobStatus = 'idle' | 'processing' | 'success' | 'error';
 
 export function usePDFWorker() {

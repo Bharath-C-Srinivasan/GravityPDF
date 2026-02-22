@@ -10,6 +10,8 @@ import ImageToPDFTool from './pages/image-to-pdf';
 import RotateTool from './pages/rotate';
 import CompressTool from './pages/compress';
 import PDFToImageTool from './pages/pdf-to-image';
+import TextToPDFTool from './pages/text-to-pdf';
+import PNGToPDFTool from './pages/png-to-pdf';
 import './App.css';
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => {
@@ -38,6 +40,8 @@ const AnimatedRoutes = () => {
         <Route path="/rotate" element={<PageTransition><RotateTool /></PageTransition>} />
         <Route path="/compress" element={<PageTransition><CompressTool /></PageTransition>} />
         <Route path="/pdf-to-image" element={<PageTransition><PDFToImageTool /></PageTransition>} />
+        <Route path="/text-to-pdf" element={<PageTransition><TextToPDFTool /></PageTransition>} />
+        <Route path="/png-to-pdf" element={<PageTransition><PNGToPDFTool /></PageTransition>} />
         <Route path="*" element={<PageTransition><Dashboard /></PageTransition>} />
       </Routes>
     </AnimatePresence>
@@ -54,6 +58,8 @@ function App() {
     { name: 'Image to PDF', path: '/image-to-pdf' },
     { name: 'Compress PDF', path: '/compress' },
     { name: 'PDF to Image', path: '/pdf-to-image' },
+    { name: 'Text to PDF', path: '/text-to-pdf' },
+    { name: 'PNG to PDF', path: '/png-to-pdf' },
   ];
 
   return (

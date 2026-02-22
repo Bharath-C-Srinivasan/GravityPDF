@@ -1,4 +1,4 @@
-import { PDFDocument, degrees } from 'pdf-lib';
+import { PDFDocument, degrees, StandardFonts, rgb } from 'pdf-lib';
 
 self.onmessage = async (e: MessageEvent) => {
     const { id, type, files, options } = e.data;
@@ -84,6 +84,73 @@ self.onmessage = async (e: MessageEvent) => {
                         width: image.width,
                         height: image.height,
                     });
+
+                    self.postMessage({ id, status: 'progress', progress: Math.round(((i + 1) / files.length) * 100) });
+                }
+
+                const newPdfBytes = await newPdf.save();
+                self.postMessage({
+                    id,
+                    status: 'success',
+                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                });
+                break;
+            }
+
+            case 'text-to-pdf': {
+                const newPdf = await PDFDocument.create();
+                const font = await newPdf.embedFont(StandardFonts.Helvetica);
+                const fontSize = 12;
+                const margin = 50;
+                const lineHeight = font.heightAtSize(fontSize) + 4;
+                const pageWidth = 595.28; // A4 width
+                const pageHeight = 841.89; // A4 height
+                const txtWidth = pageWidth - 2 * margin;
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const text = await file.text();
+                    const rawLines = text.split(/\r?\n/);
+                    const displayLines: string[] = [];
+
+                    // Basic text wrapping
+                    for (const line of rawLines) {
+                        let currentLine = '';
+                        const words = line.split(' ');
+                        for (const word of words) {
+                            const testLine = currentLine ? `${currentLine} ${word}` : word;
+                            const textWidth = font.widthOfTextAtSize(testLine, fontSize);
+                            if (textWidth > txtWidth && currentLine !== '') {
+                                displayLines.push(currentLine);
+                                currentLine = word;
+                            } else {
+                                currentLine = testLine;
+                            }
+                        }
+                        if (currentLine !== '') {
+                            displayLines.push(currentLine);
+                        } else if (words.length === 1 && words[0] === '') {
+                            displayLines.push('');
+                        }
+                    }
+
+                    let page = newPdf.addPage([pageWidth, pageHeight]);
+                    let currentY = pageHeight - margin;
+
+                    for (const line of displayLines) {
+                        if (currentY < margin + lineHeight) {
+                            page = newPdf.addPage([pageWidth, pageHeight]);
+                            currentY = pageHeight - margin;
+                        }
+                        page.drawText(line, {
+                            x: margin,
+                            y: currentY - fontSize,
+                            size: fontSize,
+                            font: font,
+                            color: rgb(0, 0, 0),
+                        });
+                        currentY -= lineHeight;
+                    }
 
                     self.postMessage({ id, status: 'progress', progress: Math.round(((i + 1) / files.length) * 100) });
                 }

@@ -1,8 +1,7 @@
-import { Layers, SplitSquareHorizontal, RotateCcw, Image as ImageIcon, Zap, FileImage } from 'lucide-react';
+import { Layers, SplitSquareHorizontal, RotateCcw, Image as ImageIcon, Zap, FileImage, FileText, ImagePlus } from 'lucide-react';
 import { DeveloperSection } from '../components/DeveloperSection';
 
-const tools = [
-    // ...
+const pdfTools = [
     {
         icon: <Layers className="h-8 w-8 text-neon-cyan" />,
         title: 'Merge PDF',
@@ -25,6 +24,16 @@ const tools = [
         color: 'neon-orange'
     },
     {
+        icon: <Zap className="h-8 w-8 text-neon-cyan" />,
+        title: 'Compress PDF',
+        description: 'Reduce file size while maintaining quality. Fast and secure.',
+        href: '/compress',
+        color: 'neon-cyan'
+    }
+];
+
+const convertTools = [
+    {
         icon: <ImageIcon className="h-8 w-8 text-neon-gold" />,
         title: 'Image to PDF',
         description: 'Convert JPG, PNG, or TIFF images into a single PDF document.',
@@ -32,18 +41,25 @@ const tools = [
         color: 'neon-gold'
     },
     {
-        icon: <Zap className="h-8 w-8 text-neon-cyan" />,
-        title: 'Compress PDF',
-        description: 'Reduce file size while maintaining quality. Fast and secure.',
-        href: '/compress',
-        color: 'neon-cyan'
-    },
-    {
         icon: <FileImage className="h-8 w-8 text-neon-magenta" />,
         title: 'PDF to Image',
         description: 'Convert every PDF page into a high-quality PNG or JPG image.',
         href: '/pdf-to-image',
         color: 'neon-magenta'
+    },
+    {
+        icon: <FileText className="h-8 w-8 text-white" />,
+        title: 'Text to PDF',
+        description: 'Convert plain text (.txt) files into a single PDF document.',
+        href: '/text-to-pdf',
+        color: 'white'
+    },
+    {
+        icon: <ImagePlus className="h-8 w-8 text-neon-green" />,
+        title: 'PNG to PDF',
+        description: 'Convert PNG images specifically into a PDF document.',
+        href: '/png-to-pdf',
+        color: 'neon-green'
     }
 ];
 
@@ -59,22 +75,48 @@ export default function Dashboard() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-16 md:mb-24 px-2">
-                {tools.map((tool) => (
-                    <a
-                        key={tool.title}
-                        href={tool.href}
-                        className="flex flex-col items-center p-4 sm:p-8 rounded-xl sm:rounded-2xl cursor-pointer glass-panel glass-panel-hover group"
-                    >
-                        <div className="p-2 sm:p-4 rounded-full mb-3 sm:mb-4 bg-black/40 border border-white/5 transition-colors shadow-lg">
-                            <div className="scale-75 sm:scale-100">
-                                {tool.icon}
+            <div className="mb-16 md:mb-24 px-2">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 tracking-tight border-b border-white/10 pb-4">
+                    PDF Tools
+                </h2>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                    {pdfTools.map((tool) => (
+                        <a
+                            key={tool.title}
+                            href={tool.href}
+                            className="flex flex-col items-center p-4 sm:p-6 rounded-xl sm:rounded-2xl cursor-pointer glass-panel glass-panel-hover group"
+                        >
+                            <div className="p-2 sm:p-4 rounded-full mb-3 sm:mb-4 bg-black/40 border border-white/5 transition-colors shadow-lg">
+                                <div className="scale-75 sm:scale-100">
+                                    {tool.icon}
+                                </div>
                             </div>
-                        </div>
-                        <h3 className="text-sm sm:text-lg md:text-xl font-bold text-white mb-1 sm:mb-2 transition-colors text-center leading-tight">{tool.title}</h3>
-                        <p className="text-center text-[10px] sm:text-sm md:text-base text-gray-400 line-clamp-2">{tool.description}</p>
-                    </a>
-                ))}
+                            <h3 className="text-sm sm:text-base md:text-lg font-bold text-white mb-1 sm:mb-2 transition-colors text-center leading-tight">{tool.title}</h3>
+                            <p className="text-center text-[10px] sm:text-xs md:text-sm text-gray-400 line-clamp-2">{tool.description}</p>
+                        </a>
+                    ))}
+                </div>
+
+                <h2 className="text-2xl md:text-3xl font-bold text-white mt-12 mb-6 tracking-tight border-b border-white/10 pb-4">
+                    Convert to PDF
+                </h2>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+                    {convertTools.map((tool) => (
+                        <a
+                            key={tool.title}
+                            href={tool.href}
+                            className="flex flex-col items-center p-4 sm:p-6 rounded-xl sm:rounded-2xl cursor-pointer glass-panel glass-panel-hover group"
+                        >
+                            <div className="p-2 sm:p-4 rounded-full mb-3 sm:mb-4 bg-black/40 border border-white/5 transition-colors shadow-lg">
+                                <div className="scale-75 sm:scale-100">
+                                    {tool.icon}
+                                </div>
+                            </div>
+                            <h3 className="text-sm sm:text-base md:text-lg font-bold text-white mb-1 sm:mb-2 transition-colors text-center leading-tight">{tool.title}</h3>
+                            <p className="text-center text-[10px] sm:text-xs md:text-sm text-gray-400 line-clamp-2">{tool.description}</p>
+                        </a>
+                    ))}
+                </div>
             </div>
 
             <div className="px-2">
