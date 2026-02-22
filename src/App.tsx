@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Layers, Menu, X } from 'lucide-react';
+import { Layers, MoreVertical, X, ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Layout } from './components/Layout';
 import Dashboard from './pages/index';
@@ -12,6 +12,13 @@ import CompressTool from './pages/compress';
 import PDFToImageTool from './pages/pdf-to-image';
 import TextToPDFTool from './pages/text-to-pdf';
 import PNGToPDFTool from './pages/png-to-pdf';
+import AddWatermarkTool from './pages/add-watermark';
+import AddPageNumbersTool from './pages/add-page-numbers';
+import DeletePagesTool from './pages/delete-pages';
+import ReorderPagesTool from './pages/reorder-pages';
+import AddBlankPagesTool from './pages/add-blank-pages';
+import EditMetadataTool from './pages/edit-metadata';
+import FlattenPDFTool from './pages/flatten-pdf';
 import './App.css';
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => {
@@ -42,6 +49,13 @@ const AnimatedRoutes = () => {
         <Route path="/pdf-to-image" element={<PageTransition><PDFToImageTool /></PageTransition>} />
         <Route path="/text-to-pdf" element={<PageTransition><TextToPDFTool /></PageTransition>} />
         <Route path="/png-to-pdf" element={<PageTransition><PNGToPDFTool /></PageTransition>} />
+        <Route path="/add-watermark" element={<PageTransition><AddWatermarkTool /></PageTransition>} />
+        <Route path="/add-page-numbers" element={<PageTransition><AddPageNumbersTool /></PageTransition>} />
+        <Route path="/delete-pages" element={<PageTransition><DeletePagesTool /></PageTransition>} />
+        <Route path="/reorder-pages" element={<PageTransition><ReorderPagesTool /></PageTransition>} />
+        <Route path="/add-blank-pages" element={<PageTransition><AddBlankPagesTool /></PageTransition>} />
+        <Route path="/edit-metadata" element={<PageTransition><EditMetadataTool /></PageTransition>} />
+        <Route path="/flatten-pdf" element={<PageTransition><FlattenPDFTool /></PageTransition>} />
         <Route path="*" element={<PageTransition><Dashboard /></PageTransition>} />
       </Routes>
     </AnimatePresence>
@@ -51,22 +65,29 @@ const AnimatedRoutes = () => {
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navLinks = [
+  const allTools = [
     { name: 'Merge PDF', path: '/merge' },
     { name: 'Split PDF', path: '/split' },
     { name: 'Rotate PDF', path: '/rotate' },
-    { name: 'Image to PDF', path: '/image-to-pdf' },
     { name: 'Compress PDF', path: '/compress' },
+    { name: 'Delete Pages', path: '/delete-pages' },
+    { name: 'Reorder Pages', path: '/reorder-pages' },
+    { name: 'Add Blank Pages', path: '/add-blank-pages' },
+    { name: 'Image to PDF', path: '/image-to-pdf' },
     { name: 'PDF to Image', path: '/pdf-to-image' },
     { name: 'Text to PDF', path: '/text-to-pdf' },
     { name: 'PNG to PDF', path: '/png-to-pdf' },
+    { name: 'Add Watermark', path: '/add-watermark' },
+    { name: 'Add Page Numbers', path: '/add-page-numbers' },
+    { name: 'Edit Metadata', path: '/edit-metadata' },
+    { name: 'Flatten PDF', path: '/flatten-pdf' },
   ];
 
   return (
     <Router>
       <Layout>
         {/* Responsive Navigation Bar */}
-        <header className="border-b border-white/10 bg-background/80 backdrop-blur-md fixed top-0 w-full z-50">
+        <header className="border-b border-white/10 bg-background/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex-shrink-0 flex items-center">
@@ -81,16 +102,27 @@ function App() {
               </div>
 
               {/* Desktop Nav */}
-              <nav className="hidden lg:flex space-x-8">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className="text-sm font-medium text-gray-300 hover:text-neon-cyan transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+              <nav className="hidden lg:flex items-center space-x-8 z-50">
+                <Link to="/" className="text-sm font-medium text-gray-300 hover:text-neon-cyan transition-colors">
+                  Dashboard
+                </Link>
+                <div className="group flex items-center h-16">
+                  <button className="flex items-center gap-1 text-sm font-medium text-gray-300 hover:text-neon-cyan transition-colors focus:outline-none h-full">
+                    All Tools <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform duration-200" />
+                  </button>
+                  <div className="fixed top-16 left-1/2 -translate-x-1/2 w-[800px] max-w-[95vw] bg-black/95 backdrop-blur-2xl border border-white/10 rounded-b-2xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-3 p-8 border-t-0 z-50">
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-b-2xl pointer-events-none" />
+                    {allTools.map(tool => (
+                      <Link
+                        key={tool.path}
+                        to={tool.path}
+                        className="relative z-10 block px-4 py-3 text-sm font-bold text-gray-300 hover:text-neon-cyan bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-transparent hover:border-neon-cyan/30 hover:shadow-[0_0_15px_rgba(0,243,255,0.15)] text-center"
+                      >
+                        {tool.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </nav>
 
               {/* Mobile Menu Toggle */}
@@ -100,7 +132,7 @@ function App() {
                   className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors focus:outline-none"
                   aria-label="Toggle menu"
                 >
-                  {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                  {isMenuOpen ? <X className="h-6 w-6" /> : <MoreVertical className="h-6 w-6" />}
                 </button>
               </div>
             </div>
@@ -116,17 +148,23 @@ function App() {
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="lg:hidden border-t border-white/5 bg-background overflow-hidden"
               >
-                <div className="px-4 py-6 space-y-4">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      className="block text-lg font-medium text-gray-300 hover:text-neon-cyan transition-colors px-2 py-1"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
+                <div className="px-4 py-6 max-h-[75vh] overflow-y-auto space-y-4">
+                  <Link to="/" className="block text-lg font-bold text-white hover:text-neon-cyan transition-colors px-2 py-1 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
+                    Dashboard
+                  </Link>
+                  <div className="space-y-1 pt-2">
+                    <div className="text-xs font-bold text-gray-500 uppercase tracking-widest px-2 mb-3">All Tools</div>
+                    {allTools.map((link) => (
+                      <Link
+                        key={link.path}
+                        to={link.path}
+                        className="block text-sm font-medium text-gray-300 hover:text-neon-cyan transition-colors px-3 py-2 rounded-lg hover:bg-white/5"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -134,7 +172,7 @@ function App() {
         </header>
 
         {/* Main Content Area */}
-        <div className="pt-16 min-h-[calc(100vh-64px)] overflow-x-hidden">
+        <div className="pt-16 min-h-[calc(100vh-64px)] overflow-x-hidden w-full max-w-[100vw]">
           <AnimatedRoutes />
         </div>
       </Layout>
