@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Layers, MoreVertical, X, ChevronDown } from 'lucide-react';
+import { Layers, MoreVertical, X, ChevronDown, Sun, Moon } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Layout } from './components/Layout';
 import Dashboard from './pages/index';
@@ -64,6 +64,25 @@ const AnimatedRoutes = () => {
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    // Check local storage or default to dark mode
+    const stored = localStorage.getItem('gravitypdf-theme');
+    if (stored) return stored === 'dark';
+    return true; // Default dark
+  });
+
+  // Apply theme class to HTML element
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (isDark) {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('gravitypdf-theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
 
   const allTools = [
     { name: 'Merge PDF', path: '/merge' },
@@ -123,10 +142,30 @@ function App() {
                     ))}
                   </div>
                 </div>
+
+                {/* Desktop Theme Toggle */}
+                <button
+                  onClick={() => setIsDark(!isDark)}
+                  className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-neon-cyan hover:border-neon-cyan/50 hover:shadow-[0_0_10px_rgba(0,243,255,0.2)] transition-all focus:outline-none"
+                  aria-label="Toggle theme"
+                  title="Toggle Light/Dark Mode"
+                >
+                  {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                </button>
               </nav>
 
-              {/* Mobile Menu Toggle */}
-              <div className="lg:hidden flex items-center">
+              {/* Mobile Actions Container */}
+              <div className="lg:hidden flex items-center gap-2">
+                {/* Mobile Theme Toggle */}
+                <button
+                  onClick={() => setIsDark(!isDark)}
+                  className="p-2 rounded-lg text-gray-400 hover:text-neon-cyan hover:bg-white/5 transition-colors focus:outline-none"
+                  aria-label="Toggle theme"
+                >
+                  {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                </button>
+
+                {/* Mobile Menu Toggle */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors focus:outline-none"

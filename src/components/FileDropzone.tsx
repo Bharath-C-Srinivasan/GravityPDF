@@ -41,7 +41,7 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
                 "flex flex-col items-center justify-center w-full max-w-3xl p-16 mx-auto",
                 "border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-300 relative overflow-hidden group glass-panel",
                 isDragActive
-                    ? "border-neon-cyan shadow-[0_0_30px_rgba(0,243,255,0.4)] bg-white/10"
+                    ? "border-neon-cyan shadow-[0_0_50px_rgba(0,243,255,0.6)] bg-white/10 scale-[1.02]"
                     : "border-white/20 hover:border-white/50 hover:bg-white/10",
                 className
             )}
@@ -66,13 +66,16 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
 
                 <div>
                     <p className={cn(
-                        "text-2xl font-bold tracking-tight transition-colors",
-                        isDragActive ? "text-neon-cyan text-glow-cyan" : "text-white group-hover:text-glow-cyan group-hover:text-white"
+                        "text-2xl font-bold tracking-tight transition-colors duration-300",
+                        isDragActive ? "text-neon-cyan text-glow-cyan scale-110 transform" : "text-white group-hover:text-glow-cyan group-hover:text-white"
                     )}>
-                        {title}
+                        {isDragActive ? "Drop it like it's hot! 🔥" : title}
                     </p>
-                    <p className="text-base text-gray-400 mt-2 font-mono">
-                        {subtitle}
+                    <p className={cn(
+                        "text-base mt-2 font-mono transition-colors duration-300",
+                        isDragActive ? "text-neon-cyan/80" : "text-gray-400"
+                    )}>
+                        {isDragActive ? "Release to instantly upload" : subtitle}
                     </p>
                 </div>
             </div>
