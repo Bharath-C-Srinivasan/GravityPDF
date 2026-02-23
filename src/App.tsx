@@ -252,7 +252,20 @@ function App() {
               )}
 
               {/* Mobile Actions Container */}
-              <div className="lg:hidden flex items-center gap-4">
+              <div className="lg:hidden flex items-center gap-3 sm:gap-4 flex-1 justify-end">
+                {/* Mobile Download APK Button */}
+                {!Capacitor.isNativePlatform() && (
+                  <a
+                    href="/downloads/GravityPDF.apk"
+                    download="GravityPDF.apk"
+                    className="flex items-center justify-center gap-1.5 bg-gradient-to-r from-neon-cyan to-neon-magenta text-white font-bold px-3 py-1.5 rounded-full text-[10px] sm:text-xs hover:opacity-90 transition-all shadow-md mr-1"
+                  >
+                    <Smartphone className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Get App</span>
+                    <span className="sm:hidden">App</span>
+                  </a>
+                )}
+
                 {/* Mobile Theme Toggle Switch */}
                 <button
                   onClick={() => setIsDark(!isDark)}
