@@ -85,7 +85,14 @@ export default function SavedFiles() {
 
     const handleOpenFile = async (file: FileInfo) => {
         try {
-            await FileOpener.openFile({ path: file.uri });
+            // Capacitor's file.uri is often a web-safe "http://localhost/_capacitor_file_..." path.
+            // External Android apps (like Adobe Reader) need the pure "file:///storage/emulated/0/..." path.
+            // We forcefully resolve the exact device location using getUri.
+            const result = await Filesystem.getUri({
+                path: file.name,
+                directory: Directory.Documents
+            });
+            await FileOpener.openFile({ path: result.uri });
         } catch (e) {
             console.error('Failed to open file:', e);
             toast.error('No default PDF viewer found.');
