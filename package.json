@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@capacitor/android": "^8.1.0",
+    "@capacitor/app": "^8.0.1",
     "@capacitor/core": "^8.1.0",
     "@capacitor/filesystem": "^8.1.2",
     "@capacitor/share": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capawesome-team/capacitor-file-opener": "^8.0.1",
     "@hello-pangea/dnd": "^18.0.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.34.3",

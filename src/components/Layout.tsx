@@ -1,6 +1,7 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 import { SideDock } from './SideDock';
+import { Capacitor } from '@capacitor/core';
 import { Footer } from './Footer';
 
 interface LayoutProps {
@@ -16,7 +17,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {children}
             </main>
 
-            <Footer />
+            {!Capacitor.isNativePlatform() && <Footer />}
 
             {/* 
         Customized Neon Toast Notifications 

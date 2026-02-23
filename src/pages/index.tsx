@@ -3,7 +3,6 @@ import {
     FileImage, FileText, ImagePlus, Droplets, Hash, Download, ShieldCheck,
     FileMinus, ArrowUpDown, FilePlus, Tags, Minimize
 } from 'lucide-react';
-import { DeveloperSection } from '../components/DeveloperSection';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Capacitor } from '@capacitor/core';
 
@@ -181,14 +180,16 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
-            <div className="text-center mb-8 md:mb-12 px-2">
-                <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 md:mb-6 pb-2 text-gradient-primary leading-[1.1]">
-                    Welcome to GravityPDF
-                </h1>
-                <p className="max-w-2xl text-base md:text-xl text-gray-400 mx-auto leading-relaxed px-2 mb-8">
-                    Your ultimate companion for seamless PDF management. Fast, secure, and entirely browser-based. Zero uploads, zero servers, total control.
-                </p>
-            </div> {/* This closes the div with className="text-center mb-8 md:mb-12 px-2" */}
+            {!Capacitor.isNativePlatform() && (
+                <div className="text-center mb-8 md:mb-12 px-2">
+                    <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 md:mb-6 pb-2 text-gradient-primary leading-[1.1]">
+                        Welcome to GravityPDF
+                    </h1>
+                    <p className="max-w-2xl text-base md:text-xl text-gray-400 mx-auto leading-relaxed px-2 mb-8">
+                        Your ultimate companion for seamless PDF management. Fast, secure, and entirely browser-based. Zero uploads, zero servers, total control.
+                    </p>
+                </div>
+            )}
 
             <div className="mb-16 md:mb-24 px-2 min-h-[50vh]">
                 <AnimatePresence mode="popLayout">
@@ -276,10 +277,6 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
                     </motion.div>
                 </div>
             )}
-
-            <div className="px-2">
-                <DeveloperSection />
-            </div>
         </div>
     );
 }

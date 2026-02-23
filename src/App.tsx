@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Layers, MoreVertical, X, ChevronDown, Sun, Moon, Search, Smartphone } from 'lucide-react';
+import { Layers, MoreVertical, X, ChevronDown, Sun, Moon, Search, Smartphone, FolderOpen } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Capacitor } from '@capacitor/core';
+import { App as CapacitorApp } from '@capacitor/app';
 import { Layout } from './components/Layout';
 import Dashboard from './pages/index';
 import MergeTool from './pages/merge';
@@ -20,6 +21,8 @@ import ReorderPagesTool from './pages/reorder-pages';
 import AddBlankPagesTool from './pages/add-blank-pages';
 import EditMetadataTool from './pages/edit-metadata';
 import FlattenPDFTool from './pages/flatten-pdf';
+import SavedFiles from './pages/saved-files';
+import AboutPage from './pages/about';
 import './App.css';
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => {
@@ -57,10 +60,40 @@ const AnimatedRoutes = ({ searchQuery, setSearchQuery }: { searchQuery: string, 
         <Route path="/add-blank-pages" element={<PageTransition><AddBlankPagesTool /></PageTransition>} />
         <Route path="/edit-metadata" element={<PageTransition><EditMetadataTool /></PageTransition>} />
         <Route path="/flatten-pdf" element={<PageTransition><FlattenPDFTool /></PageTransition>} />
+        <Route path="/saved-files" element={<PageTransition><SavedFiles /></PageTransition>} />
+        <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
         <Route path="*" element={<PageTransition><Dashboard /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   );
+};
+
+const AndroidBackButtonHandler = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    let backListenerUrl = location.pathname;
+
+    const handleBackButton = async () => {
+      if (backListenerUrl === '/' || backListenerUrl === '') {
+        // If on the dashboard, exit the app
+        await CapacitorApp.exitApp();
+      } else {
+        // If deeper in the app, navigate back one step like a browser
+        window.history.back();
+      }
+    };
+
+    const backButtonListener = CapacitorApp.addListener('backButton', handleBackButton);
+
+    return () => {
+      backButtonListener.then(listener => listener.remove());
+    };
+  }, [location.pathname]);
+
+  return null; // This is a logic-only component
 };
 
 function App() {
@@ -84,6 +117,11 @@ function App() {
       root.classList.remove('dark');
     }
     localStorage.setItem('gravitypdf-theme', isDark ? 'dark' : 'light');
+
+    // Apply native UI feeling class if running as Android/iOS App
+    if (Capacitor.isNativePlatform()) {
+      window.document.body.classList.add('capacitor-native');
+    }
   }, [isDark]);
 
   const allTools = [
@@ -106,6 +144,7 @@ function App() {
 
   return (
     <Router>
+      <AndroidBackButtonHandler />
       <Layout>
         {/* Responsive Navigation Bar */}
         <header className="border-b border-white/10 bg-background/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
@@ -155,8 +194,8 @@ function App() {
 
               {/* Desktop Nav */}
               <nav className="hidden lg:flex items-center space-x-8 z-50">
-                <Link to="/" className="text-sm font-medium text-gray-300 hover:text-neon-cyan transition-colors">
-                  Dashboard
+                <Link to="/about" className="text-sm font-medium text-gray-300 hover:text-neon-cyan transition-colors">
+                  About
                 </Link>
                 <div className="group flex items-center h-16">
                   <button className="flex items-center gap-1 text-sm font-medium text-gray-300 hover:text-neon-cyan transition-colors focus:outline-none h-full">
@@ -193,6 +232,24 @@ function App() {
                   />
                 </button>
               </nav>
+
+              {/* Native App Saved Files Icon */}
+              {Capacitor.isNativePlatform() && (
+                <div className="flex items-center ml-2 mr-2">
+                  <Link
+                    to="/saved-files"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors focus:outline-none flex items-center justify-center relative group"
+                    title="View Saved PDFs"
+                  >
+                    <FolderOpen className="w-6 h-6" />
+                    <span className="absolute -bottom-1 -right-1 flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-cyan opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-neon-cyan"></span>
+                    </span>
+                  </Link>
+                </div>
+              )}
 
               {/* Mobile Actions Container */}
               <div className="lg:hidden flex items-center gap-4">
@@ -235,25 +292,24 @@ function App() {
                 className="lg:hidden border-t border-gray-200 dark:border-white/5 bg-white dark:bg-background overflow-hidden"
               >
                 <div className="px-4 py-6 max-h-[75vh] overflow-y-auto space-y-4">
-                  {/* Mobile Search Bar */}
-                  <div className="relative group mb-4">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Search className="h-4 w-4 text-gray-400 dark:text-gray-500 group-focus-within:text-neon-cyan transition-colors" />
+                  {/* Mobile Search Bar - Hidden Natively */}
+                  {!Capacitor.isNativePlatform() && (
+                    <div className="relative mb-6">
+                      <input
+                        type="text"
+                        placeholder="Search tools..."
+                        value={searchQuery}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          if (window.location.pathname !== '/') {
+                            window.location.assign('/');
+                          }
+                        }}
+                        className="w-full bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-xl px-4 py-3 pl-10 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition-all"
+                      />
+                      <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
                     </div>
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => {
-                        setSearchQuery(e.target.value);
-                        if (window.location.pathname !== '/') {
-                          window.location.assign('/');
-                        }
-                      }}
-                      placeholder="Search tools..."
-                      className="w-full bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/50 transition-all text-sm placeholder:text-gray-500"
-                    />
-                  </div>
-
+                  )}
                   {/* Mobile Download App Button */}
                   {!Capacitor.isNativePlatform() && (
                     <a
@@ -267,22 +323,43 @@ function App() {
                     </a>
                   )}
 
-                  <Link to="/" className="block text-lg font-bold text-gray-900 dark:text-white hover:text-neon-cyan transition-colors px-2 py-1 border-b border-gray-200 dark:border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
-                    Dashboard
+                  {/* Native Mobile Saved Files Button inside Hamburger */}
+                  {Capacitor.isNativePlatform() && (
+                    <Link
+                      to="/saved-files"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-3 w-full bg-white/5 border border-white/10 text-white font-bold px-4 py-3 rounded-xl text-sm hover:bg-white/10 transition-all mb-4"
+                    >
+                      <FolderOpen className="w-5 h-5 text-neon-cyan" />
+                      Saved PDFs
+                    </Link>
+                  )}
+
+                  {/* About Page */}
+                  <Link
+                    to="/about"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center text-lg font-bold text-gray-900 dark:text-white hover:text-neon-cyan transition-colors px-2 py-4 border-b border-gray-200 dark:border-white/10"
+                  >
+                    About GravityPDF
                   </Link>
-                  <div className="space-y-1 pt-2">
-                    <div className="text-xs font-bold text-gray-500 uppercase tracking-widest px-2 mb-3">All Tools</div>
-                    {allTools.map((link) => (
-                      <Link
-                        key={link.path}
-                        to={link.path}
-                        className="block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-neon-cyan transition-colors px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {link.name}
-                      </Link>
-                    ))}
-                  </div>
+
+                  {/* Developer / Tools Lists - Hidden Natively */}
+                  {!Capacitor.isNativePlatform() && (
+                    <div className="space-y-1 pt-2">
+                      <div className="text-xs font-bold text-gray-500 uppercase tracking-widest px-2 mb-3">All Tools</div>
+                      {allTools.map((link) => (
+                        <Link
+                          key={link.path}
+                          to={link.path}
+                          className="block text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-neon-cyan transition-colors px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/5"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {link.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -294,7 +371,7 @@ function App() {
           <AnimatedRoutes searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
       </Layout>
-    </Router>
+    </Router >
   );
 }
 

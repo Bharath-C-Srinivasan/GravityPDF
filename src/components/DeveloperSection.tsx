@@ -1,21 +1,24 @@
 import { Linkedin, Instagram } from 'lucide-react';
 import developerImg from '../assets/developer_profile.jpg';
+import { Capacitor } from '@capacitor/core';
 
-export const DeveloperSection = () => {
+export const DeveloperSection = ({ forceNativeShow = false }: { forceNativeShow?: boolean }) => {
     return (
         <section className="py-12 md:py-20 px-2 md:px-4 relative overflow-hidden">
             <div className="max-w-4xl mx-auto">
-                <div className="glass-panel p-6 md:p-12 rounded-3xl flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
-                    <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-magenta rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                        <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl">
-                            <img
-                                src={developerImg}
-                                alt="Bharath CS"
-                                className="w-full h-full object-cover transition-all duration-500 transform hover:scale-110"
-                            />
+                <div className="glass-panel p-6 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 relative z-10">
+                    {(!Capacitor.isNativePlatform() || forceNativeShow) && (
+                        <div className="relative group flex-shrink-0">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-magenta rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                            <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl">
+                                <img
+                                    src={developerImg}
+                                    alt="Bharath CS"
+                                    className="w-full h-full object-cover transition-all duration-500 transform hover:scale-110"
+                                />
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="flex-1 text-center md:text-left">
                         <h2 className="text-[10px] md:text-sm font-mono text-neon-cyan mb-2 tracking-widest uppercase">Developed By</h2>

@@ -6,6 +6,17 @@
   body {
     @apply bg-background text-gray-100 font-sans antialiased min-h-screen overflow-x-hidden;
   }
+
+  /* Native App UI Overrides */
+  body.capacitor-native {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body.capacitor-native::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer utilities {

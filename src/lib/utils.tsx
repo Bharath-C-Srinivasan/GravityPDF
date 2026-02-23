@@ -1,0 +1,90 @@
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import toast from 'react-hot-toast';
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
+}
+
+export async function downloadFile(blob: Blob, filename: string): Promise<void> {
+    if (Capacitor.isNativePlatform()) {
+        try {
+            // Convert Blob to base64 string for Capacitor
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            const base64Data = await new Promise<string>((resolve, reject) => {
+                reader.onloadend = () => {
+                    if (typeof reader.result === 'string') {
+                        resolve(reader.result.split(',')[1]);
+                    } else {
+                        reject('Failed to convert blob to base64');
+                    }
+                };
+                reader.onerror = reject;
+            });
+
+            // Write the file to device Documents
+            const savedFile = await Filesystem.writeFile({
+                path: filename,
+                data: base64Data,
+                directory: Directory.Documents,
+            });
+
+            // Prompt the user with a custom Toast instead of aggressive sharing
+            toast((t) => (
+                <div className="flex flex-col gap-3 w-full bg-gray-900 border border-white/10 p-4 rounded-xl shadow-2xl">
+                    <p className="text-white text-sm font-medium">Successfully saved <strong>{filename}</strong></p>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                                import('@capawesome-team/capacitor-file-opener').then(({ FileOpener }) => {
+                                    FileOpener.openFile({ path: savedFile.uri }).catch(err => {
+                                        console.error("Failed to open file", err);
+                                        toast.error("No default PDF viewer found.");
+                                    });
+                                });
+                            }}
+                            className="flex-1 bg-neon-cyan/20 hover:bg-neon-cyan text-neon-cyan hover:text-black transition-colors px-3 py-2 rounded-lg text-sm font-bold text-center"
+                        >
+                            Open File
+                        </button>
+                        < button
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                                Share.share({
+                                    title: 'Share PDF',
+                                    text: `Sharing ${filename}`,
+                                    url: savedFile.uri,
+                                    dialogTitle: 'Share ' + filename
+                                }).catch(console.error);
+                            }
+                            }
+                            className="flex-1 bg-neon-magenta/20 hover:bg-neon-magenta text-neon-magenta hover:text-white transition-colors px-3 py-2 rounded-lg text-sm font-bold text-center"
+                        >
+                            Share File
+                        </button>
+                    </div>
+                </div>
+            ), { duration: 6000 });
+
+        } catch (e) {
+            console.error("Native download failed", e);
+            toast.error("Failed to save file.");
+            throw e;
+        }
+    } else {
+        // Standard Web Download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+}
