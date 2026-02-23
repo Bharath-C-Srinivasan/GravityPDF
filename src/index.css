@@ -15,7 +15,7 @@
   }
 
   body.capacitor-native::-webkit-scrollbar {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -43,10 +43,17 @@
 }
 
 /* Custom Scrollbar Removal globally */
-::-webkit-scrollbar {
-  display: none;
-  width: 0px;
-  height: 0px;
+* {
+  scrollbar-width: none !important;
+  /* Firefox */
+  -ms-overflow-style: none !important;
+  /* IE/Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
 }
 
 /* 
