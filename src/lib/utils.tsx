@@ -35,8 +35,8 @@ export async function downloadFile(blob: Blob, filename: string): Promise<void> 
 
             // Prompt the user with a custom Toast instead of aggressive sharing
             toast((t) => (
-                <div className="flex flex-col gap-3 w-full bg-gray-900 border border-white/10 p-4 rounded-xl shadow-2xl">
-                    <p className="text-white text-sm font-medium">Successfully saved <strong>{filename}</strong></p>
+                <div className="flex flex-col gap-3 w-[40vw] min-w-[280px] bg-gray-900 border border-white/10 p-4 rounded-xl shadow-2xl">
+                    <p className="text-white text-sm font-medium text-center">Successfully saved <strong>{filename}</strong></p>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => {
@@ -48,11 +48,11 @@ export async function downloadFile(blob: Blob, filename: string): Promise<void> 
                                     });
                                 });
                             }}
-                            className="flex-1 bg-neon-cyan/20 hover:bg-neon-cyan text-neon-cyan hover:text-black transition-colors px-3 py-2 rounded-lg text-sm font-bold text-center"
+                            className="flex-1 bg-neon-cyan/20 hover:bg-neon-cyan text-neon-cyan hover:text-black transition-colors px-3 py-2 rounded-lg text-sm font-bold text-center whitespace-nowrap"
                         >
                             Open File
                         </button>
-                        < button
+                        <button
                             onClick={() => {
                                 toast.dismiss(t.id);
                                 Share.share({
@@ -63,13 +63,23 @@ export async function downloadFile(blob: Blob, filename: string): Promise<void> 
                                 }).catch(console.error);
                             }
                             }
-                            className="flex-1 bg-neon-magenta/20 hover:bg-neon-magenta text-neon-magenta hover:text-white transition-colors px-3 py-2 rounded-lg text-sm font-bold text-center"
+                            className="flex-1 bg-neon-magenta/20 hover:bg-neon-magenta text-neon-magenta hover:text-white transition-colors px-3 py-2 rounded-lg text-sm font-bold text-center whitespace-nowrap"
                         >
                             Share File
                         </button>
                     </div>
                 </div>
-            ), { duration: 6000 });
+            ), {
+                duration: 6000,
+                position: 'top-center',
+                style: {
+                    marginTop: '30vh',
+                    minWidth: '40vw',
+                    background: 'transparent',
+                    boxShadow: 'none',
+                    padding: 0
+                }
+            });
 
         } catch (e) {
             console.error("Native download failed", e);
