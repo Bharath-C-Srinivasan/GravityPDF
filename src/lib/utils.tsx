@@ -70,9 +70,9 @@ export async function downloadFile(blob: Blob, filename: string): Promise<void> 
                 </div>
             ), {
                 duration: 6000,
-                position: 'top-center',
+                position: 'bottom-center',
                 style: {
-                    marginTop: '25vh',
+                    marginBottom: '5vh',
                     minWidth: '80vw',
                     background: 'transparent',
                     boxShadow: 'none',

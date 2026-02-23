@@ -7,15 +7,26 @@
     @apply bg-background text-gray-100 font-sans antialiased min-h-screen overflow-x-hidden;
   }
 
-  /* Native App UI Overrides */
   body.capacitor-native {
     user-select: none;
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
+    overflow: hidden !important;
+    /* Lock the body */
+    height: 100vh !important;
   }
 
-  body.capacitor-native::-webkit-scrollbar {
+  body.capacitor-native #root {
+    overflow-y: auto !important;
+    /* Enable inner scrolling */
+    height: 100vh !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.capacitor-native::-webkit-scrollbar,
+  body.capacitor-native #root::-webkit-scrollbar {
     display: none !important;
+    width: 0px !important;
   }
 }
 

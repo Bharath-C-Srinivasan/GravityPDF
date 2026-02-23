@@ -6,6 +6,7 @@ import { FileText, Share2, Trash2, ArrowLeft, RefreshCw, AlertCircle } from 'luc
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 export default function SavedFiles() {
     const [files, setFiles] = useState<FileInfo[]>([]);
@@ -79,6 +80,15 @@ export default function SavedFiles() {
         } catch (e) {
             console.error('Error sharing file:', e);
             toast.error('Could not share file.');
+        }
+    };
+
+    const handleOpenFile = async (file: FileInfo) => {
+        try {
+            await FileOpener.openFile({ path: file.uri });
+        } catch (e) {
+            console.error('Failed to open file:', e);
+            toast.error('No default PDF viewer found.');
         }
     };
 
@@ -179,9 +189,10 @@ export default function SavedFiles() {
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ delay: index * 0.05 }}
                                 key={file.name}
-                                className="glass-panel p-4 rounded-xl flex items-center justify-between group hover:border-white/20 transition-all"
+                                className="glass-panel p-4 rounded-xl flex items-center justify-between group hover:border-white/20 transition-all cursor-pointer"
+                                onClick={() => handleOpenFile(file)}
                             >
-                                <div className="flex items-center gap-4 overflow-hidden">
+                                <div className="flex items-center gap-4 overflow-hidden pointer-events-none">
                                     <div className="w-10 h-10 rounded-lg bg-neon-cyan/10 flex items-center justify-center shrink-0">
                                         <FileText className="w-5 h-5 text-neon-cyan" />
                                     </div>
@@ -196,16 +207,22 @@ export default function SavedFiles() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2 pl-4 shrink-0">
+                                <div className="flex items-center gap-2 pl-4 shrink-0" onClick={e => e.stopPropagation()}>
                                     <button
-                                        onClick={() => handleShare(file)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleShare(file);
+                                        }}
                                         className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
                                         title="Share File"
                                     >
                                         <Share2 className="w-4 h-4" />
                                     </button>
                                     <button
-                                        onClick={() => handleDelete(file)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDelete(file);
+                                        }}
                                         className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors"
                                         title="Delete File"
                                     >
