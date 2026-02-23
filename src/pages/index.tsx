@@ -191,6 +191,12 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
                 </div>
             )}
 
+            {Capacitor.isNativePlatform() && (
+                <div className="mb-4 pl-4 pt-4">
+                    <h2 className="text-3xl font-extrabold text-white tracking-tight text-glow-cyan">Dashboard</h2>
+                </div>
+            )}
+
             <div className="mb-16 md:mb-24 px-2 min-h-[50vh]">
                 <AnimatePresence mode="popLayout">
                     {totalResults === 0 ? (

@@ -3,6 +3,8 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 type JobType = 'merge' | 'split' | 'compress' | 'convert' | 'image-to-pdf' | 'rotate' | 'text-to-pdf' | 'add-watermark' | 'add-page-numbers' | 'delete-pages' | 'reorder-pages' | 'add-blank-pages' | 'grayscale' | 'edit-metadata' | 'flatten';
 type JobStatus = 'idle' | 'processing' | 'success' | 'error';
 
+import PdfWorker from '../workers/pdf.worker?worker&inline';
+
 export function usePDFWorker() {
     const [status, setStatus] = useState<JobStatus>('idle');
     const [progress, setProgress] = useState(0);
@@ -12,7 +14,7 @@ export function usePDFWorker() {
 
     // Initialize worker
     useEffect(() => {
-        workerRef.current = new Worker(new URL('../workers/pdf.worker.ts', import.meta.url), { type: 'module' });
+        workerRef.current = new PdfWorker();
 
         return () => {
             workerRef.current?.terminate();
