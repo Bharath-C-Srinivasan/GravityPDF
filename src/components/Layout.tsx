@@ -13,7 +13,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="relative min-h-screen flex flex-col pt-16">
             <SideDock />
 
-            <main className="flex-grow z-10">
+            <main className="flex-grow">
                 {children}
             </main>
 

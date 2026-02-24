@@ -37,9 +37,9 @@ export default function MergeTool() {
 
         try {
             const result = await processJob('merge', files);
-            if (result) {
+            if (result && result[0]) {
                 // Create download link
-                await downloadFile(result as Blob, 'merged_gravitypdf.pdf');
+                await downloadFile(result[0] as Blob, 'merged_gravitypdf.pdf');
 
                 toast.success("PDF merged successfully!");
             }

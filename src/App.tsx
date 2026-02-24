@@ -381,7 +381,7 @@ function App() {
         </header>
 
         {/* Main Content Area */}
-        <div className="pt-16 min-h-[calc(100vh-64px)] overflow-x-hidden w-full max-w-[100vw]">
+        <div className="min-h-[calc(100vh-64px)] overflow-x-hidden w-full max-w-[100vw]">
           <AnimatedRoutes searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
       </Layout>
