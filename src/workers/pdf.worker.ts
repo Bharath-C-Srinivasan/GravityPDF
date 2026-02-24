@@ -6,38 +6,14 @@ self.onmessage = async (e: MessageEvent) => {
     try {
         self.postMessage({ id, status: 'progress', progress: 0 });
 
-        const getArrayBuffer = async (file: File | Blob) => {
-            if (typeof file.arrayBuffer === 'function') {
-                return await file.arrayBuffer();
-            }
-            return new Promise<ArrayBuffer>((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result as ArrayBuffer);
-                reader.onerror = reject;
-                reader.readAsArrayBuffer(file);
-            });
-        };
-
-        const getText = async (file: File | Blob) => {
-            if (typeof file.text === 'function') {
-                return await file.text();
-            }
-            return new Promise<string>((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result as string);
-                reader.onerror = reject;
-                reader.readAsText(file);
-            });
-        };
-
         switch (type) {
             case 'merge': {
                 const mergedPdf = await PDFDocument.create();
 
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
-                    const arrayBuffer = await getArrayBuffer(file);
-                    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdfDoc = await PDFDocument.load(arrayBuffer);
 
                     const copiedPages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
                     copiedPages.forEach((page) => mergedPdf.addPage(page));
@@ -57,8 +33,8 @@ self.onmessage = async (e: MessageEvent) => {
             case 'split': {
                 console.log('Worker received split command. Options:', options);
                 const file = files[0];
-                const arrayBuffer = await getArrayBuffer(file);
-                const srcDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const arrayBuffer = await file.arrayBuffer();
+                const srcDoc = await PDFDocument.load(arrayBuffer);
 
                 const selectedPages: number[] = options?.pages || srcDoc.getPageIndices();
                 console.log('Worker selected pages to extract:', selectedPages);
@@ -90,7 +66,7 @@ self.onmessage = async (e: MessageEvent) => {
 
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
-                    const arrayBuffer = await getArrayBuffer(file);
+                    const arrayBuffer = await file.arrayBuffer();
 
                     let image;
                     if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
@@ -116,7 +92,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -133,7 +109,7 @@ self.onmessage = async (e: MessageEvent) => {
 
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
-                    const text = await getText(file);
+                    const text = await file.text();
                     const rawLines = text.split(/\r?\n/);
                     const displayLines: string[] = [];
 
@@ -183,15 +159,15 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
 
             case 'rotate': {
                 const file = files[0];
-                const arrayBuffer = await getArrayBuffer(file);
-                const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const arrayBuffer = await file.arrayBuffer();
+                const pdfDoc = await PDFDocument.load(arrayBuffer);
                 const rotations = options?.rotations || {};
 
                 self.postMessage({ id, status: 'progress', progress: 20 });
@@ -226,12 +202,12 @@ self.onmessage = async (e: MessageEvent) => {
 
             case 'compress': {
                 const file = files[0];
-                const arrayBuffer = await getArrayBuffer(file);
+                const arrayBuffer = await file.arrayBuffer();
                 const level = options?.level || 'recommended'; // 'low' | 'recommended' | 'extreme'
 
                 self.postMessage({ id, status: 'progress', progress: 10 });
 
-                let pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                let pdfDoc = await PDFDocument.load(arrayBuffer);
                 let finalPdfDoc = pdfDoc;
 
                 if (level === 'extreme') {
@@ -278,12 +254,12 @@ self.onmessage = async (e: MessageEvent) => {
 
             case 'delete-pages': {
                 const file = files[0];
-                const arrayBuffer = await getArrayBuffer(file);
+                const arrayBuffer = await file.arrayBuffer();
                 const pagesToDeleteStr = options?.pagesToDelete || '';
 
                 self.postMessage({ id, status: 'progress', progress: 10 });
 
-                const srcDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const srcDoc = await PDFDocument.load(arrayBuffer);
                 const totalSrcPages = srcDoc.getPageCount();
 
                 // Parse 1-indexed pages to delete
@@ -337,12 +313,12 @@ self.onmessage = async (e: MessageEvent) => {
 
             case 'reorder-pages': {
                 const file = files[0];
-                const arrayBuffer = await getArrayBuffer(file);
+                const arrayBuffer = await file.arrayBuffer();
                 const newOrder: number[] = options?.newOrder || [];
 
                 self.postMessage({ id, status: 'progress', progress: 10 });
 
-                const srcDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const srcDoc = await PDFDocument.load(arrayBuffer);
 
                 if (newOrder.length === 0) {
                     throw new Error("No new order provided.");
@@ -372,12 +348,12 @@ self.onmessage = async (e: MessageEvent) => {
 
             case 'add-blank-pages': {
                 const file = files[0];
-                const arrayBuffer = await getArrayBuffer(file);
+                const arrayBuffer = await file.arrayBuffer();
                 const insertionsStr = options?.insertions || '';
 
                 self.postMessage({ id, status: 'progress', progress: 10 });
 
-                const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const pdfDoc = await PDFDocument.load(arrayBuffer);
                 const totalPages = pdfDoc.getPageCount();
 
                 // determine page dimensions from first page, or A4 default
@@ -430,13 +406,13 @@ self.onmessage = async (e: MessageEvent) => {
 
             case 'add-watermark': {
                 const file = files[0];
-                const arrayBuffer = await getArrayBuffer(file);
+                const arrayBuffer = await file.arrayBuffer();
                 const watermarkText = options?.text || 'CONFIDENTIAL';
                 const opacity = options?.opacity || 0.3;
 
                 self.postMessage({ id, status: 'progress', progress: 10 });
 
-                const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const pdfDoc = await PDFDocument.load(arrayBuffer);
                 const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
                 const pages = pdfDoc.getPages();
 
@@ -476,12 +452,12 @@ self.onmessage = async (e: MessageEvent) => {
 
             case 'add-page-numbers': {
                 const file = files[0];
-                const arrayBuffer = await getArrayBuffer(file);
+                const arrayBuffer = await file.arrayBuffer();
                 const position = options?.position || 'bottom-center';
 
                 self.postMessage({ id, status: 'progress', progress: 10 });
 
-                const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+                const pdfDoc = await PDFDocument.load(arrayBuffer);
                 const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
                 const pages = pdfDoc.getPages();
                 const fontSize = 12;
