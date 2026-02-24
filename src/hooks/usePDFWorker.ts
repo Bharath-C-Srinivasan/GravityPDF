@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 type JobType = 'merge' | 'split' | 'compress' | 'convert' | 'image-to-pdf' | 'rotate' | 'text-to-pdf' | 'add-watermark' | 'add-page-numbers' | 'delete-pages' | 'reorder-pages' | 'add-blank-pages' | 'grayscale' | 'edit-metadata' | 'flatten';
 type JobStatus = 'idle' | 'processing' | 'success' | 'error';
 
-import PdfWorker from '../workers/pdf.worker?worker&inline';
+import PdfWorker from '../workers/pdf.worker?worker';
 
 export function usePDFWorker() {
     const [status, setStatus] = useState<JobStatus>('idle');

@@ -25,7 +25,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: [new Blob([mergedPdfBytes as any], { type: 'application/pdf' })]
+                    data: new Blob([mergedPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
