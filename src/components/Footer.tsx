@@ -90,7 +90,7 @@ export const Footer = () => {
 
                     <div className="flex items-center gap-6 text-[10px] md:text-xs uppercase tracking-[0.2em] font-mono text-gray-500">
                         <span className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"><Globe className="w-3.5 h-3.5 text-neon-magenta" /> Global CDN</span>
-                        <span className="hidden sm:inline">Version 2.4.0-Stable</span>
+                        <span className="hidden sm:inline">Version 2.5.0-Stable</span>
                     </div>
                 </div>
             </div>
