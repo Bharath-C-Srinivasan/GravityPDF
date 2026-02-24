@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 
 export default function SavedFiles() {
-    const [files, setFiles] = useState<FileInfo[]>([]);
+    const [files, setFiles] = useState<(FileInfo & { directory: Directory })[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -22,14 +22,26 @@ export default function SavedFiles() {
         setLoading(true);
         setError(null);
         try {
-            // Read the Documents directory
-            const result = await Filesystem.readdir({
-                path: '',
-                directory: Directory.Documents,
-            });
+            // Read both Documents and Cache directories
+            const [docsResult, cacheResult] = await Promise.all([
+                Filesystem.readdir({
+                    path: '',
+                    directory: Directory.Documents,
+                }).catch(() => ({ files: [] })),
+                Filesystem.readdir({
+                    path: '',
+                    directory: Directory.Cache,
+                }).catch(() => ({ files: [] })),
+            ]);
+
+            // Combine files and track their source directory
+            const allFiles = [
+                ...docsResult.files.map(f => ({ ...f, directory: Directory.Documents })),
+                ...cacheResult.files.map(f => ({ ...f, directory: Directory.Cache })),
+            ];
 
             // Filter for PDF files and sort by modification time (newest first)
-            const pdfFiles = result.files
+            const pdfFiles = allFiles
                 .filter(file => file.name.endsWith('.pdf'))
                 .sort((a, b) => {
                     const timeA = a.mtime || 0;
@@ -69,7 +81,7 @@ export default function SavedFiles() {
         });
     };
 
-    const handleShare = async (file: FileInfo) => {
+    const handleShare = async (file: FileInfo & { directory: Directory }) => {
         try {
             await Share.share({
                 title: 'Share PDF',
@@ -83,14 +95,14 @@ export default function SavedFiles() {
         }
     };
 
-    const handleOpenFile = async (file: FileInfo) => {
+    const handleOpenFile = async (file: FileInfo & { directory: Directory }) => {
         try {
             // Capacitor's file.uri is often a web-safe "http://localhost/_capacitor_file_..." path.
             // External Android apps (like Adobe Reader) need the pure "file:///storage/emulated/0/..." path.
             // We forcefully resolve the exact device location using getUri.
             const result = await Filesystem.getUri({
                 path: file.name,
-                directory: Directory.Documents
+                directory: file.directory
             });
             await FileOpener.openFile({ path: result.uri });
         } catch (e) {
@@ -99,11 +111,11 @@ export default function SavedFiles() {
         }
     };
 
-    const handleDelete = async (file: FileInfo) => {
+    const handleDelete = async (file: FileInfo & { directory: Directory }) => {
         try {
             await Filesystem.deleteFile({
                 path: file.name,
-                directory: Directory.Documents,
+                directory: file.directory,
             });
             toast.success(`${file.name} deleted`);
             // Remove from local state
