@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
   body {
     @apply bg-background text-gray-100 font-sans antialiased min-h-screen overflow-x-hidden;
@@ -68,6 +72,15 @@ html.light .glass-panel {
   color: #1e293b !important;
 }
 
+/* Ensure native components look good in light mode */
+html.light .capacitor-native .bg-white {
+  background-color: #ffffff !important;
+}
+
+html.light .capacitor-native .bg-gray-50 {
+  background-color: #f9fafb !important;
+}
+
 html.light .text-white,
 html.light .text-gray-100,
 html.light .text-gray-200 {
@@ -77,6 +90,15 @@ html.light .text-gray-200 {
 html.light .text-gray-400,
 html.light .text-gray-300 {
   color: #64748b !important;
+}
+
+/* Fix for specific background colors used in native cards */
+html.light .bg-\[\#111322\] {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-\[\#0a0b14\] {
+  background-color: #f3f4f6 !important;
 }
 
 html.light .bg-white\/5,

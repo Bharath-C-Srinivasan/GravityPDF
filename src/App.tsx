@@ -147,7 +147,7 @@ function App() {
       <AndroidBackButtonHandler />
       <Layout>
         {/* Responsive Navigation Bar */}
-        <header className={`bg-background/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 ${Capacitor.isNativePlatform() ? 'border-none' : 'border-b border-white/10'}`}>
+        <header className={`bg-background/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 border-b border-gray-200 dark:border-white/10 ${Capacitor.isNativePlatform() ? 'border-b' : 'border-b shadow-sm'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex-shrink-0 flex items-center">
@@ -176,7 +176,7 @@ function App() {
                     }
                   }}
                   placeholder="Search for tools..."
-                  className="w-full bg-white/10 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white rounded-full py-1.5 pl-10 pr-4 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/50 transition-all text-sm placeholder:text-gray-500 shadow-inner dark:shadow-none"
+                  className="w-full bg-white/10 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-full py-1.5 pl-10 pr-4 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan/50 transition-all text-sm placeholder:text-gray-500 shadow-sm dark:shadow-none"
                 />
               </div>
 

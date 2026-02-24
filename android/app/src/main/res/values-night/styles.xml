@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+        <!-- Set a slightly lighter dark background to reveal the logo/text if it's dark -->
+        <item name="android:background">#1a1b2e</item>
+        <item name="android:windowSplashscreenContent">@drawable/splash</item>
+    </style>
+</resources>
