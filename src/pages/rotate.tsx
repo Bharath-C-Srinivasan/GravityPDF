@@ -98,15 +98,15 @@ export default function RotateTool() {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex flex-col h-full"
                 >
-                    <div className="glass-panel p-6 rounded-2xl mb-8 flex justify-between items-center sticky top-20 z-40 bg-background/80 backdrop-blur-xl border-x-0 border-t-0 rounded-t-none border-white/10">
-                        <div>
-                            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    <div className="glass-panel p-4 md:p-6 rounded-2xl mb-8 flex flex-col sm:flex-row justify-between items-center sticky top-16 z-40 bg-background/80 backdrop-blur-xl border-x-0 border-t-0 rounded-t-none border-white/10 gap-4">
+                        <div className="text-center sm:text-left">
+                            <h2 className="text-lg md:text-xl font-bold text-white flex items-center justify-center sm:justify-start gap-2">
                                 <RotateCw className="w-5 h-5 text-neon-purple" />
                                 Interactive Rotation
                             </h2>
-                            <p className="text-sm text-gray-400 mt-1">{file.name} • {numPages} Pages</p>
+                            <p className="text-xs md:text-sm text-gray-400 mt-0.5">{file.name} • {numPages} Pages</p>
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex gap-3 w-full sm:w-auto">
                             <button
                                 onClick={() => {
                                     setFile(null);
@@ -114,19 +114,19 @@ export default function RotateTool() {
                                     setRotations({});
                                     reset();
                                 }}
-                                className="px-5 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors border border-transparent hover:border-white/10"
+                                className="flex-1 sm:flex-none px-4 md:px-5 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors border border-transparent hover:border-white/10"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleApplyRotation}
                                 disabled={isProcessing}
-                                className={`px-6 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all duration-300 ${isProcessing
+                                className={`flex-1 sm:flex-none px-5 md:px-6 py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-all duration-300 ${isProcessing
                                     ? 'bg-gray-800 text-gray-500 cursor-not-allowed border-gray-700'
                                     : 'bg-purple-900/40 text-purple-100 hover:bg-purple-800/60 border border-purple-500/50 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]'
                                     }`}
                             >
-                                {isProcessing ? 'Applying...' : 'Apply Rotations'}
+                                {isProcessing ? 'Applying...' : 'Apply Changes'}
                             </button>
                         </div>
                     </div>
