@@ -31,11 +31,11 @@ export default function CompressTool() {
         if (!file) return;
 
         try {
-            const compressedBlob = await processJob('compress', [file], { level: compressionLevel });
-            if (compressedBlob) {
-                setCompressedSize(compressedBlob.size);
+            const result = await processJob('compress', [file], { level: compressionLevel });
+            if (result && result[0]) {
+                setCompressedSize(result[0].size);
 
-                await downloadFile(compressedBlob as Blob, `compressed_${file.name}`);
+                await downloadFile(result[0] as Blob, `compressed_${file.name}`);
 
                 toast.success("PDF compressed successfully!");
             }

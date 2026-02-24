@@ -28,16 +28,14 @@ export default function ImageToPDFTool() {
     const removeFile = (index: number) => {
         setFiles(prev => prev.filter((_, i) => i !== index));
     };
-
     const handleConvert = async () => {
         if (files.length === 0) return;
 
         try {
-            // Reusing merge jobType but passing 'image-to-pdf' to trigger the specific worker case we will build
-            const resultBlob = await processJob('image-to-pdf', files);
+            const result = await processJob('image-to-pdf', files);
 
-            if (resultBlob) {
-                await downloadFile(resultBlob as Blob, `converted_images.pdf`);
+            if (result && result[0]) {
+                await downloadFile(result[0] as Blob, `converted_images.pdf`);
                 toast.success('Images successfully converted to PDF!');
             }
         } catch (e) {

@@ -37,10 +37,10 @@ export default function AddBlankPagesTool() {
         }
 
         try {
-            const resultBlob = await processJob('add-blank-pages', files, { insertions });
+            const result = await processJob('add-blank-pages', files, { insertions });
 
-            if (resultBlob) {
-                await downloadFile(resultBlob as Blob, `with_blanks_${files[0].name}`);
+            if (result && result[0]) {
+                await downloadFile(result[0] as Blob, `with_blanks_${files[0].name}`);
                 toast.success('Blank pages added successfully!');
             }
         } catch (e: any) {

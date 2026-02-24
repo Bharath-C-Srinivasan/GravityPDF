@@ -23,21 +23,24 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         Customized Neon Toast Notifications 
       */}
             <Toaster
-                position="bottom-right"
+                position="bottom-center"
                 toastOptions={{
-                    className: '',
+                    className: 'dark:bg-[#1a1a1a] dark:text-white bg-white text-gray-900 border border-gray-200 dark:border-white/10 shadow-2xl rounded-xl px-6 py-3 font-medium text-sm transition-all duration-300',
                     style: {
-                        background: 'rgba(20, 20, 20, 0.9)',
-                        backdropFilter: 'blur(10px)',
-                        color: '#fff',
-                        border: '1px solid rgba(57, 255, 20, 0.5)',
-                        boxShadow: '0 0 15px rgba(57, 255, 20, 0.3)', // neon-green
-                        borderRadius: '8px',
+                        background: 'transparent', // controlled by tailwind classes in className
+                        border: 'none',
+                        boxShadow: 'none',
                     },
                     success: {
                         iconTheme: {
-                            primary: '#39ff14', // neon-green
-                            secondary: '#1a1a1a',
+                            primary: '#22d3ee', // neon-cyan
+                            secondary: '#fff',
+                        },
+                    },
+                    error: {
+                        iconTheme: {
+                            primary: '#ef4444',
+                            secondary: '#fff',
                         },
                     },
                 }}

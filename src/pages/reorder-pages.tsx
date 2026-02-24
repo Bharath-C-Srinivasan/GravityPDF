@@ -53,10 +53,10 @@ export default function ReorderPagesTool() {
         if (!file || pageOrder.length === 0) return;
 
         try {
-            const resultBlob = await processJob('reorder-pages', [file], { newOrder: pageOrder });
+            const result = await processJob('reorder-pages', [file], { newOrder: pageOrder });
 
-            if (resultBlob) {
-                await downloadFile(resultBlob as Blob, `reordered_${file.name}`);
+            if (result && result[0]) {
+                await downloadFile(result[0] as Blob, `reordered_${file.name}`);
                 toast.success('Pages reordered successfully!');
             }
         } catch (e: any) {

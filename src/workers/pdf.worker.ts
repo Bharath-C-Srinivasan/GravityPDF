@@ -25,7 +25,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([mergedPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([mergedPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -195,7 +195,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([rotatedPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([rotatedPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -247,7 +247,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([compressedPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([compressedPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -302,13 +302,11 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({ id, status: 'progress', progress: 80 });
 
                 const newPdfBytes = await newPdf.save();
-
                 self.postMessage({ id, status: 'progress', progress: 100 });
-
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -339,13 +337,11 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({ id, status: 'progress', progress: 80 });
 
                 const newPdfBytes = await newPdf.save();
-
                 self.postMessage({ id, status: 'progress', progress: 100 });
-
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -399,13 +395,11 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({ id, status: 'progress', progress: 80 });
 
                 const newPdfBytes = await pdfDoc.save();
-
                 self.postMessage({ id, status: 'progress', progress: 100 });
-
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -447,13 +441,11 @@ self.onmessage = async (e: MessageEvent) => {
                 }
 
                 const newPdfBytes = await pdfDoc.save();
-
                 self.postMessage({ id, status: 'progress', progress: 100 });
-
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -507,13 +499,11 @@ self.onmessage = async (e: MessageEvent) => {
                 }
 
                 const newPdfBytes = await pdfDoc.save();
-
                 self.postMessage({ id, status: 'progress', progress: 100 });
-
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -542,13 +532,11 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({ id, status: 'progress', progress: 80 });
 
                 const newPdfBytes = await pdfDoc.save();
-
                 self.postMessage({ id, status: 'progress', progress: 100 });
-
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -573,13 +561,11 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({ id, status: 'progress', progress: 80 });
 
                 const newPdfBytes = await pdfDoc.save();
-
                 self.postMessage({ id, status: 'progress', progress: 100 });
-
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
+                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }

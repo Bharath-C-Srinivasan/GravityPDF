@@ -38,10 +38,10 @@ export default function DeletePagesTool() {
         }
 
         try {
-            const resultBlob = await processJob('delete-pages', files, { pagesToDelete });
+            const result = await processJob('delete-pages', files, { pagesToDelete });
 
-            if (resultBlob) {
-                await downloadFile(resultBlob as Blob, `updated_${files[0].name}`);
+            if (result && result[0]) {
+                await downloadFile(result[0] as Blob, `updated_${files[0].name}`);
                 toast.success('Pages deleted successfully!');
             }
         } catch (e: any) {

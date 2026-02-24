@@ -31,10 +31,10 @@ export default function FlattenPDFTool() {
         if (files.length === 0) return;
 
         try {
-            const resultBlob = await processJob('flatten', files);
+            const result = await processJob('flatten', files);
 
-            if (resultBlob) {
-                await downloadFile(resultBlob as Blob, `flattened_${files[0].name}`);
+            if (result && result[0]) {
+                await downloadFile(result[0] as Blob, `flattened_${files[0].name}`);
                 toast.success('PDF flattened successfully!');
             }
         } catch (e: any) {
@@ -146,6 +146,6 @@ export default function FlattenPDFTool() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </div >
     );
 }

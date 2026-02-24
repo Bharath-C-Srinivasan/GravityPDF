@@ -35,10 +35,10 @@ export default function PNGToPDFTool() {
         if (files.length === 0) return;
 
         try {
-            const resultBlob = await processJob('image-to-pdf', files);
+            const result = await processJob('image-to-pdf', files);
 
-            if (resultBlob) {
-                await downloadFile(resultBlob as Blob, `converted_images.pdf`);
+            if (result && result[0]) {
+                await downloadFile(result[0] as Blob, `converted_images.pdf`);
                 toast.success('PNGs successfully converted to PDF!');
             }
         } catch (e) {

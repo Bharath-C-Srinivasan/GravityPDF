@@ -36,10 +36,10 @@ export default function MergeTool() {
         if (files.length < 2) return;
 
         try {
-            const mergedBlob = await processJob('merge', files);
-            if (mergedBlob) {
+            const result = await processJob('merge', files);
+            if (result && result[0]) {
                 // Create download link
-                await downloadFile(mergedBlob as Blob, 'merged_gravitypdf.pdf');
+                await downloadFile(result[0] as Blob, 'merged_gravitypdf.pdf');
 
                 toast.success("PDF merged successfully!");
             }

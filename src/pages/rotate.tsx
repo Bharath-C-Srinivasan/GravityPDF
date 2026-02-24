@@ -56,22 +56,14 @@ export default function RotateTool() {
             };
         });
     };
-
     const handleApplyRotation = async () => {
         if (!file) return;
 
         try {
-            // Options: { rotations: { 0: 90, 1: 180, ... } }
-            const resultBlob = await processJob('rotate', [file], { rotations });
+            const result = await processJob('rotate', [file], { rotations });
 
-            if (resultBlob && Array.isArray(resultBlob)) {
-                // Return single blob if its just one document
-                const finalBlob = resultBlob[0];
-                await downloadFile(finalBlob as Blob, `rotated_${file.name}`);
-                toast.success('Successfully rotated PDF pages!');
-            } else if (resultBlob) {
-                // Fallback if worker returns generic non-array
-                await downloadFile(resultBlob as Blob, `rotated_${file.name}`);
+            if (result && result[0]) {
+                await downloadFile(result[0] as Blob, `rotated_${file.name}`);
                 toast.success('Successfully rotated PDF pages!');
             }
         } catch (e) {
