@@ -277,7 +277,7 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
                                             className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-neon-cyan to-neon-magenta px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
                                         >
                                             <Download className="w-5 h-5" style={{ color: '#ffffff' }} />
-                                            <span style={{ color: '#ffffff' }}>Download APK (17 MB)</span>
+                                            <span style={{ color: '#ffffff' }}>Download APK (21 MB)</span>
                                         </a>
 
                                         <div className="text-xs text-gray-500 flex items-center gap-1 mt-2 sm:mt-0">
