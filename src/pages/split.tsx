@@ -11,6 +11,41 @@ export default function SplitTool() {
     const [file, setFile] = useState<File | null>(null);
     const [numPages, setNumPages] = useState<number>(0);
     const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
+    const [pageRangeInput, setPageRangeInput] = useState<string>('');
+
+    const parsePageRange = (input: string, maxPages: number): Set<number> => {
+        const pages = new Set<number>();
+        const parts = input.split(',').map(s => s.trim());
+        for (const part of parts) {
+            if (!part) continue;
+            if (part.includes('-')) {
+                const [startStr, endStr] = part.split('-');
+                const startRange = parseInt(startStr);
+                const endRange = parseInt(endStr);
+                if (!isNaN(startRange) && !isNaN(endRange)) {
+                    const start = Math.max(1, Math.min(startRange, endRange));
+                    const end = Math.min(maxPages, Math.max(startRange, endRange));
+                    for (let i = start; i <= end; i++) pages.add(i);
+                }
+            } else {
+                const page = parseInt(part);
+                if (!isNaN(page) && page >= 1 && page <= maxPages) pages.add(page);
+            }
+        }
+        return pages;
+    };
+
+    const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        setPageRangeInput(val);
+        if (val.trim() !== '') {
+            setSelectedPages(parsePageRange(val, numPages));
+        } else {
+            const allPages = new Set<number>();
+            for (let i = 1; i <= numPages; i++) allPages.add(i);
+            setSelectedPages(allPages);
+        }
+    };
     const { status, progress, error, processJob, reset, isProcessing } = usePDFWorker();
 
     // Handle file selection
@@ -30,6 +65,7 @@ export default function SplitTool() {
                     allPages.add(i);
                 }
                 setSelectedPages(allPages);
+                setPageRangeInput(`1-${pdf.numPages}`);
             } catch (err) {
                 toast.error("Could not read PDF file.");
                 setFile(null);
@@ -45,6 +81,9 @@ export default function SplitTool() {
             } else {
                 newSet.add(pageNumber);
             }
+                const arr = Array.from(newSet).sort((a,b) => a-b);
+            if (arr.length === numPages) setPageRangeInput(`1-${numPages}`);
+            else setPageRangeInput(arr.join(', '));
             return newSet;
         });
     };
@@ -80,7 +119,7 @@ export default function SplitTool() {
                     Split / Extract PDF
                 </h1>
                 <p className="text-gray-400 font-mono text-sm md:text-base max-w-2xl mx-auto">
-                    Select visually which pages you want to keep. The extracted document will be downloaded instantly.
+                    Type a page range or select visually which pages you want to keep. The extracted document will be downloaded instantly.
                 </p>
             </div>
 
@@ -98,23 +137,27 @@ export default function SplitTool() {
                     className="space-y-8"
                 >
                     <div className="p-8 rounded-2xl glass-panel relative">
-                        <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                            <h3 className="text-lg font-bold text-white">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b border-white/10 pb-4 gap-4">
+                            <h3 className="text-lg font-bold text-white whitespace-nowrap">
                                 Select Pages ({selectedPages.size} / {numPages})
                             </h3>
+                            <div className="flex-1 max-w-md w-full mx-auto md:mx-4">
+                                <input type="text" value={pageRangeInput} onChange={handleRangeChange} placeholder={`e.g. 1-5, 8, 11-${Math.min(13, numPages)}`} className="w-full bg-black/40 border border-white/20 text-white rounded-xl py-2 px-4 focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan transition-all text-sm placeholder:text-gray-500" />
+                            </div>
                             <div className="space-x-4">
                                 <button
                                     onClick={() => {
                                         const all = new Set<number>();
                                         for (let i = 1; i <= numPages; i++) all.add(i);
                                         setSelectedPages(all);
+                                        setPageRangeInput(`1-${numPages}`);
                                     }}
                                     className="text-sm text-gray-400 hover:text-neon-cyan transition-colors"
                                 >
                                     Select All
                                 </button>
                                 <button
-                                    onClick={() => setSelectedPages(new Set())}
+                                    onClick={() => { setSelectedPages(new Set()); setPageRangeInput(''); }}
                                     className="text-sm text-gray-400 hover:text-neon-cyan transition-colors"
                                 >
                                     Deselect All
@@ -124,6 +167,7 @@ export default function SplitTool() {
                                         setFile(null);
                                         setNumPages(0);
                                         setSelectedPages(new Set());
+                                        setPageRangeInput('');
                                         reset();
                                     }}
                                     className="text-sm text-red-400 hover:text-red-300 transition-colors ml-4"

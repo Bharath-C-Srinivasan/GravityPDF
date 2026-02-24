@@ -147,7 +147,7 @@ function App() {
       <AndroidBackButtonHandler />
       <Layout>
         {/* Responsive Navigation Bar */}
-        <header className="border-b border-white/10 bg-background/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50">
+        <header className={`bg-background/80 backdrop-blur-md fixed top-0 left-0 right-0 z-50 ${Capacitor.isNativePlatform() ? 'border-none' : 'border-b border-white/10'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex-shrink-0 flex items-center">
@@ -157,7 +157,7 @@ function App() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Layers className="h-6 w-6 md:h-7 md:w-7 text-neon-cyan" />
-                  <span>Gravity<span className="text-neon-cyan">PDF</span></span>
+                  <span className="flex items-center">Gravity<span className="text-neon-cyan">PDF</span></span>
                 </Link>
               </div>
 
@@ -269,16 +269,17 @@ function App() {
                 {/* Mobile Theme Toggle Switch */}
                 <button
                   onClick={() => setIsDark(!isDark)}
-                  className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none ${isDark ? 'bg-white/10 border border-white/20' : 'bg-gray-200 border border-gray-300 shadow-inner'}`}
+                  className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none ${isDark ? Capacitor.isNativePlatform() ? 'bg-white/10 border border-white/20 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]' : 'bg-white/10 border border-white/20' : 'bg-gray-200 border border-gray-300 shadow-inner'}`}
                   aria-label="Toggle theme"
                 >
                   <span className="sr-only">Toggle theme</span>
+                  <div className={`absolute inset-0 rounded-full transition-all duration-300 ${isDark ? 'bg-black/40' : 'bg-gray-300'}`}></div>
                   <span className="absolute inset-x-0 flex justify-between px-2 w-full pointer-events-none text-xs z-0">
-                    <Moon className={`w-3.5 h-3.5 transition-opacity ${isDark ? 'text-white' : 'text-gray-400 opacity-50'}`} />
-                    <Sun className={`w-3.5 h-3.5 transition-opacity ${isDark ? 'text-gray-500 opacity-50' : 'text-orange-500'}`} />
+                    <Moon className={`w-3.5 h-3.5 transition-opacity ${isDark ? 'text-white' : 'text-gray-400 opacity-0'}`} />
+                    <Sun className={`w-3.5 h-3.5 transition-opacity ${isDark ? 'opacity-0' : 'text-orange-500'}`} />
                   </span>
                   <span
-                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-300 ease-in-out z-10 ${isDark ? 'translate-x-1 shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'translate-x-8 shadow-md'}`}
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-300 ease-in-out z-10 ${isDark ? Capacitor.isNativePlatform() ? 'translate-x-1 shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'translate-x-[4px]' : Capacitor.isNativePlatform() ? 'translate-x-8 shadow-md' : 'translate-x-[32px]'}`}
                   />
                 </button>
 

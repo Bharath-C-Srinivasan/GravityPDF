@@ -25,7 +25,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([mergedPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([mergedPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -56,7 +56,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: [new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })]
+                    data: [new Blob([newPdfBytes as any], { type: 'application/pdf' })]
                 });
                 break;
             }
@@ -92,7 +92,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -159,7 +159,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -195,7 +195,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([rotatedPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([rotatedPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -247,7 +247,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([compressedPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([compressedPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -308,7 +308,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -345,7 +345,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -405,7 +405,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -453,7 +453,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -513,7 +513,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -548,7 +548,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }
@@ -579,7 +579,7 @@ self.onmessage = async (e: MessageEvent) => {
                 self.postMessage({
                     id,
                     status: 'success',
-                    data: new Blob([newPdfBytes.buffer as ArrayBuffer], { type: 'application/pdf' })
+                    data: new Blob([newPdfBytes as any], { type: 'application/pdf' })
                 });
                 break;
             }

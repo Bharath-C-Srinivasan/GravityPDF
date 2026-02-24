@@ -123,17 +123,25 @@ const securityTools = [
 const Section = ({ title, tools }: { title: string, tools: any[] }) => {
     if (tools.length === 0) return null;
 
+    const isNative = Capacitor.isNativePlatform();
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="mb-12"
+            className="mb-8"
         >
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 tracking-tight border-b border-white/10 pb-4">
+            <h2 className={isNative
+                ? "text-2xl font-bold text-white mb-6 md:mb-8 tracking-tight text-center mt-0"
+                : "text-2xl md:text-3xl font-bold text-white mb-6 tracking-tight border-b border-white/10 pb-4"
+            }>
                 {title}
             </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div className={isNative
+                ? "grid grid-cols-2 gap-4"
+                : "grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
+            }>
                 <AnimatePresence>
                     {tools.map((tool) => (
                         <motion.a
@@ -144,15 +152,31 @@ const Section = ({ title, tools }: { title: string, tools: any[] }) => {
                             transition={{ duration: 0.2 }}
                             key={tool.title}
                             href={tool.href}
-                            className="flex flex-col items-center p-4 sm:p-6 rounded-xl sm:rounded-2xl cursor-pointer glass-panel glass-panel-hover group h-full"
+                            className={isNative
+                                ? "flex flex-col items-center justify-center pt-8 pb-6 px-4 rounded-3xl cursor-pointer bg-[#111322] hover:bg-[#181b2e] active:scale-95 transition-all text-center group h-full border-0"
+                                : "flex flex-col items-center p-4 sm:p-6 rounded-xl sm:rounded-2xl cursor-pointer glass-panel glass-panel-hover group h-full"
+                            }
                         >
-                            <div className="p-2 sm:p-4 rounded-full mb-3 sm:mb-4 bg-black/40 border border-white/5 transition-colors shadow-lg">
-                                <div className="scale-75 sm:scale-100">
+                            <div className={isNative
+                                ? "w-14 h-14 flex items-center justify-center rounded-2xl mb-4 bg-[#0a0b14] transition-all duration-300"
+                                : "p-2 sm:p-4 rounded-full mb-3 sm:mb-4 bg-black/40 border border-white/5 transition-colors shadow-lg"
+                            }>
+                                <div className={isNative ? "scale-100" : "scale-75 sm:scale-100"}>
                                     {tool.icon}
                                 </div>
                             </div>
-                            <h3 className="text-sm sm:text-base md:text-lg font-bold text-white mb-1 sm:mb-2 transition-colors text-center leading-tight">{tool.title}</h3>
-                            <p className="text-center text-[10px] sm:text-xs md:text-sm text-gray-400 line-clamp-2 mt-auto">{tool.description}</p>
+                            <h3 className={isNative
+                                ? "text-sm font-bold text-white mb-2 transition-colors text-center leading-tight tracking-tight"
+                                : "text-sm sm:text-base md:text-lg font-bold text-white mb-1 sm:mb-2 transition-colors text-center leading-tight"
+                            }>
+                                {tool.title}
+                            </h3>
+                            <p className={isNative
+                                ? "text-center text-[10px] text-gray-400 line-clamp-2 mt-auto leading-relaxed px-1"
+                                : "text-center text-[10px] sm:text-xs md:text-sm text-gray-400 line-clamp-2 mt-auto"
+                            }>
+                                {tool.description}
+                            </p>
                         </motion.a>
                     ))}
                 </AnimatePresence>
@@ -179,7 +203,7 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
     const totalResults = filteredPdfTools.length + filteredConvertTools.length + filteredSecurityTools.length;
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
+        <div className={`max-w-6xl mx-auto px-4 ${Capacitor.isNativePlatform() ? 'pt-0 pb-8' : 'py-8 md:py-12'}`}>
             {!Capacitor.isNativePlatform() && (
                 <div className="text-center mb-8 md:mb-12 px-2">
                     <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 md:mb-6 pb-2 text-gradient-primary leading-[1.1]">
@@ -191,13 +215,7 @@ export default function Dashboard({ searchQuery = '', setSearchQuery }: { search
                 </div>
             )}
 
-            {Capacitor.isNativePlatform() && (
-                <div className="mb-4 pl-4 pt-4">
-                    <h2 className="text-3xl font-extrabold text-white tracking-tight text-glow-cyan">Dashboard</h2>
-                </div>
-            )}
-
-            <div className="mb-16 md:mb-24 px-2 min-h-[50vh]">
+            <div className={`${Capacitor.isNativePlatform() ? 'mb-8 mt-0' : 'mb-16 md:mb-24'} px-2 min-h-[50vh]`}>
                 <AnimatePresence mode="popLayout">
                     {totalResults === 0 ? (
                         <motion.div
