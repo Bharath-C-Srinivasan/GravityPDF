@@ -30,7 +30,7 @@ export async function downloadFile(blob: Blob, filename: string): Promise<void> 
             const savedFile = await Filesystem.writeFile({
                 path: filename,
                 data: base64Data,
-                directory: Directory.Documents,
+                directory: Directory.Cache,
             });
 
             // Prompt the user with a custom Toast instead of aggressive sharing
